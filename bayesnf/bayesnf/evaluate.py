@@ -49,12 +49,12 @@ def run_experiment(
     seed: jax.Array,
 ) -> tuple[ArrayT, ArrayT, ArrayT]:
   """Runs a single training experiment, writes output to output_dir."""
-  path_train = data_root + f'{dataset}.{series_id}.train.csv'
+  path_train = os.path.join(data_root, f'{dataset}.{series_id}.train.csv')
   df_train = pd.read_csv(path_train, index_col=0, parse_dates=['datetime'])
-  path_test = data_root + f'{dataset}.{series_id}.test.csv'
+  path_test = os.path.join(data_root, f'{dataset}.{series_id}.test.csv')
   df_test = pd.read_csv(path_test, index_col=0, parse_dates=['datetime'])
 
-  os.mkdirs(output_dir)
+  os.makedirs(output_dir, exist_ok=True)
   path_model = os.path.join(
       output_dir, f'bnf-{objective}.{dataset}.{series_id}.json'
   )

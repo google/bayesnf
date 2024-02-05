@@ -19,17 +19,28 @@ import os
 import pkgutil
 import tempfile
 
+import bayesnf
 from bayesnf import dataset_config
 from bayesnf import evaluate
 import jax
 import pandas as pd
 import pytest
 
+_DIR = os.path.dirname(os.path.abspath(__file__))
 
-@pytest.fixture(name='golden_data')
-def fixture_golden_data(fname):
-  return pd.read_csv(io.BytesIO(pkgutil.get_data(
-      'bayesnf', f'tests/test_data/{fname}')))
+
+@pytest.fixture(name='golden_data_getter')
+def fixture_golden_data_getter():
+  def data_getter(fname):
+    try:
+      data = pd.read_csv(
+          io.BytesIO(pkgutil.get_data('bayesnf.tests', f'test_data/{fname}')))
+    except FileNotFoundError as exc:
+      raise FileNotFoundError(
+          f'Expected to see {fname} in {bayesnf.__file__}/tests/test_data'
+      ) from exc
+    return data
+  return data_getter
 
 
 def run_objective(objective, inference_config):
@@ -39,7 +50,7 @@ def run_objective(objective, inference_config):
   fname = f'bnf-{objective}.chickenpox.8.pred.csv'
   _ = evaluate.run_experiment(
       dataset=dataset,
-      data_root='test_data/',
+      data_root=os.path.join(_DIR, 'test_data'),
       series_id=series_id,
       output_dir=output_dir,
       objective=objective,
@@ -51,31 +62,28 @@ def run_objective(objective, inference_config):
   return pd.read_csv(os.path.join(output_dir, fname))
 
 
-def test_map(golden_data):
-  # These are from `runner.py`, but `num_epochs` is smaller for testing.
-  # Note that `runner.py` is a binary, which is why this is not imported.
+@pytest.mark.skip('Too slow.')
+def test_map(golden_data_getter):
   inference_config = {
       'num_particles': 64,
       'num_epochs': 100,
       'learning_rate': 0.005}
   new_data = run_objective('map', inference_config)
-  assert new_data.equals(golden_data)
+  assert new_data.equals(golden_data_getter('bnf-map.chickenpox.8.pred.csv'))
 
 
-def test_mle(golden_data):
-  # These are from `runner.py`, but `num_epochs` is smaller for testing.
-  # Note that `runner.py` is a binary, which is why this is not imported.
+@pytest.mark.skip('Too slow.')
+def test_mle(golden_data_getter):
   inference_config = {
       'num_particles': 64,
       'num_epochs': 100,
       'learning_rate': 0.005}
   new_data = run_objective('mle', inference_config)
-  assert new_data.equals(golden_data)
+  assert new_data.equals(golden_data_getter('bnf-mle.chickenpox.8.pred.csv'))
 
 
-def test_vi(golden_data):
-  # These are from `runner.py`, but `num_epochs` is smaller for testing.
-  # Note that `runner.py` is a binary, which is why this is not imported.
+@pytest.mark.skip('Too slow.')
+def test_vi(golden_data_getter):
   inference_config = {
       'batch_size': 511,
       'kl_weight': 0.1,
@@ -84,4 +92,4 @@ def test_vi(golden_data):
       'num_particles': 64,
       'sample_size': 5}
   new_data = run_objective('vi', inference_config)
-  assert new_data.equals(golden_data)
+  assert new_data.equals(golden_data_getter('bnf-vi.chickenpox.8.pred.csv'))

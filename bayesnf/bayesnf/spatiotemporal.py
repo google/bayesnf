@@ -71,7 +71,7 @@ def seasonalities_to_array(
     freq: Frequency of the data.
 
   Raises:
-    TypeError if the seasonality is less than or equal to 1
+    TypeError: If the seasonality is less than or equal to 1.
 
   Returns:
     Array of floats greater than 1, representing seasonalities.

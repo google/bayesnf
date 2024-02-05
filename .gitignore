@@ -23,3 +23,7 @@ poetry.lock
 
 # PyCharm
 .idea
+
+# Documentation
+.all_objects.cache
+site/

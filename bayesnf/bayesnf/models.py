@@ -123,15 +123,22 @@ def make_likelihood_model(
 
   See also https://en.wikipedia.org/wiki/Negative_binomial_distribution, in
   particular the section on Alternative parameterizations, which defines:
+
+  ```
   probs = mean / variance
   total_count = mean^2 / (variance - mean)
-  so that variance = mean + mean^2 / total_count
-  and thus total_count = 1 / shape
+  ```
 
-  From this we get the parameters passed to tfd.NegativeBinomial below:
+  so that `variance = mean + mean^2 / total_count`
+  and thus `total_count = 1 / shape`.
+
+  From this we get the parameters passed to `tfd.NegativeBinomial` below:
+
+  ```
   total_count = 1 / shape
   probs = mean / (mean + mean^2 * shape)
         = 1 / (1 + mean * shape)
+  ```
 
   For zero inflation we follow ideas from https://arxiv.org/pdf/2010.09647.pdf
 

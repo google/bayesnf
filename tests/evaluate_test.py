@@ -63,6 +63,7 @@ def run_objective(objective, inference_config):
   return pd.read_csv(os.path.join(output_dir, fname))
 
 
+# TODO: Training data is missing
 @pytest.mark.skip('Too slow.')
 def test_map(golden_data_getter):
   inference_config = {
@@ -73,6 +74,7 @@ def test_map(golden_data_getter):
   assert new_data.equals(golden_data_getter('bnf-map.chickenpox.8.pred.csv'))
 
 
+# TODO: Training data is missing
 @pytest.mark.skip('Too slow.')
 def test_mle(golden_data_getter):
   inference_config = {
@@ -83,6 +85,7 @@ def test_mle(golden_data_getter):
   assert new_data.equals(golden_data_getter('bnf-mle.chickenpox.8.pred.csv'))
 
 
+# TODO: Training data is missing
 @pytest.mark.skip('Too slow.')
 def test_vi(golden_data_getter):
   inference_config = {

@@ -67,23 +67,23 @@ nav.md-nav {
   }
 
   .md-typeset h1 {
-      font-size: 1.6rem;
-  }
-
-  .md-typeset h2 {
-      font-size: 1.5rem;
-  }
-
-  .md-typeset h3 {
       font-size: 1.3rem;
   }
 
-  .md-typeset h4 {
+  .md-typeset h2 {
       font-size: 1.1rem;
   }
 
+  .md-typeset h3 {
+      font-size: 1rem;
+  }
+
+  .md-typeset h4 {
+      font-size: 0.8rem;
+  }
+
   .md-typeset h5 {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
   }
 
   .md-typeset h6 {
@@ -146,4 +146,13 @@ nav.md-nav {
   /* Make errors in notebooks have scrolling */
   .output_error > pre {
       overflow: auto;
+  }
+
+  .md-typeset table:not([class]) {
+      font-size: .8rem;
+  }
+
+  /*  Width of the page */
+  .md-grid {
+    max-width: 70%;
   }

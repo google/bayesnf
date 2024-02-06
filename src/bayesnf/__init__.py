@@ -27,21 +27,6 @@
 # limitations under the License.
 """bayesnf API."""
 
-# A new PyPI release will be pushed everytime `__version__` is increased
+# A new PyPI release will be pushed every time `__version__` is increased.
 # When changing this, also update the CHANGELOG.md
 __version__ = '0.1.0'
-
-# pylint: disable=useless-import-alias,g-bad-import-order
-from .bayesnf import dataset_config as dataset_config
-from .bayesnf import models as models
-from .bayesnf import inference as inference
-from .bayesnf import spatiotemporal as spatiotemporal
-from .bayesnf import evaluate as evaluate
-# pylint: enable=useless-import-alias,g-bad-import-order
-
-__all__ = [
-    'dataset_config',
-    'evaluate',
-    'inference',
-    'models',
-    'spatiotemporal',]

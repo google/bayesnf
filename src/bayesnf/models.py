@@ -15,13 +15,15 @@
 """Model code for Bayesian-neural-field time-series work."""
 
 import enum
+
 from typing import Tuple
 
 import flax
-from flax import linen as nn
 import jax
-from jax import numpy as jnp
 import numpy as np
+
+from flax import linen as nn
+from jax import numpy as jnp
 from tensorflow_probability.substrates import jax as tfp  # pylint: disable=g-importing-member
 
 tfd = tfp.distributions

@@ -75,7 +75,3 @@ build-backend = "flit_core.buildapi"
 # Flit specific options (files to exclude from the PyPI package).
 # If using another build backend (setuptools, poetry), you can remove this
 # section.
-exclude = [
-  # Do not release tests files on PyPI
-  "**/*_test.py",
-]

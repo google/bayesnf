@@ -670,8 +670,8 @@ def ensemble_vi(
     - losses: Array of shape `(NUM_DEVICES, ensemble_size, num_epochs)`.
       The losses from each step of optimization.
 
-    - predictions: Array of num_samples samples of the BNF parameters from each of
-    the `(NUM_DEVICES, ensemble_size)` surrogate posteriors.
+    - predictions: Array of num_samples samples of the BNF parameters from each
+    of the `(NUM_DEVICES, ensemble_size)` surrogate posteriors.
   """
   features = jnp.array(features)
   target = jnp.array(target)

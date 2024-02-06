@@ -28,7 +28,10 @@ gradient descent for handling large-scale data.
 python -m pip install .
 ```
 
-Typical install time is 1 minute. This software is tested on Python 3.9.
+Typical install time is 1 minute. The direct dependencies are shown
+in the [pyproject.toml](./pyproject.toml#L18-L26) file.
+
+This software is tested on Python 3.9.
 Experiments were run using TPU accelerators.
 
 ## Documentation and Tutorials

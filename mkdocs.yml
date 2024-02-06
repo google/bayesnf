@@ -75,10 +75,11 @@ plugins:
                     # show_root_heading: true  # actually display anything at all...
                     show_root_full_path: true  # display "diffrax.asdf" not just "asdf"
                     show_if_no_docstring: false
-                    show_signature_annotations: true
+                    show_signature_annotations: false
                     show_source: false  # don't include source code
                     members_order: source  # order methods according to their order of definition in the source code, not alphabetical order
                     heading_level: 4
+                    line_length: 120
 
 nav:
     - 'index.md'

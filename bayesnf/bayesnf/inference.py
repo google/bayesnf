@@ -71,7 +71,7 @@ def _approximate_normal_quantile(
     axis: Batch axis to reduce over.
 
   Returns:
-    Array of approximate `q`th quantiles, which should have
+    Array: Approximate `q`th quantiles, which should have
     shape `means.shape[-1]`.
   """
   mixture_mean = means.mean(axis)
@@ -145,16 +145,20 @@ def forecast_parameters_batched(
     batchsize: Batch size to use for splitting up the computation.
 
   Returns:
-    A tuple of parameters, depending on the likelihood distribution.
-    Normal likelihood: `loc` of shape BATCH_SHAPE+OBS_SHAPE and `scale` of
-      shape BATCH_SHAPE
-    Negative Binomial: `total_count` of shape BATCH_SHAPE and `logits` of
-      shape BATCH_SHAPE + OBS_SHAPE
-    Zero Inflated Negative Binomial: `total_count` of shape BATCH_SHAPE,
-      `logits` of shape BATCH_SHAPE + OBS_SHAPE, and  `inflated_loc_probs` of
-      shape BATCH_SHAPE.
-    Note that `loc` and `logits` have shape BATCH_SHAPE + OBS_SHAPE. Other
-    parameters are shared across time and only have BATCH_SHAPE.
+    tuple:
+
+    - Normal likelihood: `loc` of shape `BATCH_SHAPE + OBS_SHAPE` and
+    `scale` of shape `BATCH_SHAPE`.
+
+    - Negative Binomial: `total_count` of shape BATCH_SHAPE and `logits` of
+      shape `BATCH_SHAPE + OBS_SHAPE`.
+
+    - Zero Inflated Negative Binomial: `total_count` of shape `BATCH_SHAPE`,
+      `logits` of shape `BATCH_SHAPE + OBS_SHAPE`, and `inflated_loc_probs`
+      of shape `BATCH_SHAPE`.
+
+    Note that `loc` and `logits` have shape `BATCH_SHAPE + OBS_SHAPE`. Other
+    parameters are shared across time and only have `BATCH_SHAPE`.
   """
   forecast_params_slices = [[], [], []]
 
@@ -535,10 +539,13 @@ def ensemble_map(
       log-prob is multiplied by `prior_weight`.
 
   Returns:
-    params: Inferred parameters.  The leftmost dimensions will be
-      `(NUM_DEVICES, ensemble_size)`.
-    losses: Array of shape (NUM_DEVICES, ensemble_size, num_epochs) -- the
-      losses from each step (epoch) of optimization.
+    tuple:
+
+    - params: The inferred parameters, where the leftmost dimensions will
+      be `(NUM_DEVICES, ensemble_size)`.
+
+    - losses: An array of shape `(NUM_DEVICES, ensemble_size, num_epochs)`,
+      which show the losses from each step (epoch) of optimization.
   """
   features = jnp.array(features)
   target = jnp.array(target)
@@ -654,13 +661,17 @@ def ensemble_vi(
       Defaults to `None`.
 
   Returns:
-    surrogate_posterior: A distribution over the (approximate) posterior.
+    tuple:
+
+    - surrogate_posterior: A distribution over the (approximate) posterior.
       for the learned mean-field surrogate posteriors.  The leftmost
-      dimensions will be (NUM_DEVICES, ensemble_size)
-    losses: Array of shape (NUM_DEVICES, ensemble_size, num_epochs) -- the
-      losses from each step of optimization.
-    predictions: Array of num_samples samples of the BNF parameters from each of
-    the (NUM_DEVICES, ensemble_size) surrogate posteriors.
+      dimensions will be `(NUM_DEVICES, ensemble_size)`.
+
+    - losses: Array of shape `(NUM_DEVICES, ensemble_size, num_epochs)`.
+      The losses from each step of optimization.
+
+    - predictions: Array of num_samples samples of the BNF parameters from each of
+    the `(NUM_DEVICES, ensemble_size)` surrogate posteriors.
   """
   features = jnp.array(features)
   target = jnp.array(target)

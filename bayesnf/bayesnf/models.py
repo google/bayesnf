@@ -116,13 +116,14 @@ def make_likelihood_model(
   the scale is given by the noise scale.
 
   For a NegativeBinomial, we parametrize in terms of mean and shape
-  following Salinas et al. "DeepAR: Probabilistic Forecasting with
-  Autoregressive Recurrent Networks" https://arxiv.org/pdf/1704.04110.pdf
-  (Section 3.1), but use a shared shape parameter, which is the inverse of the
+  following [DeepAR: Probabilistic Forecasting with
+  Autoregressive Recurrent Networks](https://arxiv.org/pdf/1704.04110.pdf)
+  (Salinas et al. 2019; Section 3.1)
+  but use a shared shape parameter, which is the inverse of the
   total count. The variance equals `mean + mean^2 * shape`.
 
-  See also https://en.wikipedia.org/wiki/Negative_binomial_distribution, in
-  particular the section on Alternative parameterizations, which defines:
+  See also <https://en.wikipedia.org/wiki/Negative_binomial_distribution>, in
+  particular the section on Alternative parameterization, which defines:
 
   ```
   probs = mean / variance

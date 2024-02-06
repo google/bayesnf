@@ -35,11 +35,11 @@ def seasonality_to_float(seasonality: str, freq: str) -> float:
   ratio.
 
   For example
-    seasonality_to_float('Y', 'D') == 365.25
-
-    seasonality_to_float('Y', 'W') == 52.25
-
-    seasonality_to_float('M', 'D') == 30.4375
+  ```
+  >>> seasonality_to_float('Y', 'D') == 365.25
+  >>> seasonality_to_float('Y', 'W') == 52.25
+  >>> seasonality_to_float('M', 'D') == 30.4375
+  ```
 
   Args:
     seasonality: A valid pandas frequency.

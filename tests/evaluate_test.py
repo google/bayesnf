@@ -35,6 +35,7 @@ def fixture_golden_data_getter():
     try:
       data = pd.read_csv(
           io.BytesIO(pkgutil.get_data('bayesnf.tests', f'test_data/{fname}')))
+    # Training data is missing and must be added.
     except FileNotFoundError as exc:
       raise FileNotFoundError(
           f'Expected to see {fname} in {bayesnf.__file__}/tests/test_data'

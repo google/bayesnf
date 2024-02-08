@@ -18,7 +18,7 @@ import numpy
 
 DATASET_CONFIG = {
     'air_quality': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'pm10',
         'timetype': 'index',
         'freq': 'H',
@@ -27,7 +27,7 @@ DATASET_CONFIG = {
         'series_id_fmt': str,
     },
     'wind': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'wind',
         'timetype': 'index',
         'freq': 'D',
@@ -36,7 +36,7 @@ DATASET_CONFIG = {
         'series_id_fmt': str,
     },
     'air': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'pm10',
         'timetype': 'index',
         'freq': 'D',
@@ -45,7 +45,7 @@ DATASET_CONFIG = {
         'series_id_fmt': str,
     },
     'chickenpox': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'chickenpox',
         'timetype': 'index',
         'freq': 'W',
@@ -54,7 +54,7 @@ DATASET_CONFIG = {
         'series_id_fmt': str,
     },
     'coprecip': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'ppt',
         'timetype': 'index',
         'freq': 'M',
@@ -63,22 +63,13 @@ DATASET_CONFIG = {
         'series_id_fmt': str,
     },
     'sst': {
-        'num_series': 12,
+        'num_series': 10,
         'target_col': 'sst',
         'timetype': 'index',
         'freq': 'M',
         'feature_cols': ['datetime', 'latitude', 'longitude', 'soi'],
         'standardize': ['latitude', 'longitude'],
         'series_id_fmt': str,
-    },
-    'M3Month': {
-        'num_series': 1428,
-        'target_col': 'value',
-        'timetype': 'index',
-        'freq': 'M',
-        'feature_cols': ['datetime'],
-        'standardize': [],
-        'series_id_fmt': lambda s: str(1402 + s),
     },
 }
 

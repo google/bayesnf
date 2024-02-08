@@ -15,9 +15,9 @@
 """Code to run inference using spatiotemporal BNF."""
 
 import functools
-from typing import Any, Callable
+from typing import Any
+from typing import Callable
 
-from bayesnf import models
 import flax
 import jax
 from jax import numpy as jnp
@@ -26,6 +26,7 @@ import numpy as np
 import optax
 from tensorflow_probability.substrates import jax as tfp  # pylint: disable=g-importing-member
 
+from . import models
 
 tfd = tfp.distributions
 ArrayT = jax.Array | np.ndarray

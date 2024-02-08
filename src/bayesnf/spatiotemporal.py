@@ -15,14 +15,14 @@
 """Model code for spatiotemporal Bayesian neural field."""
 from collections.abc import Sequence
 
-from bayesnf import inference
-from bayesnf import models
 import jax
 import jax.numpy as jnp
 import numpy as np
 import pandas as pd
 import tensorflow_probability.substrates.jax as tfp
 
+from . import inference
+from . import models
 
 tfd = tfp.distributions
 

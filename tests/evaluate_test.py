@@ -20,8 +20,8 @@ import pkgutil
 import tempfile
 
 import bayesnf
-from bayesnf import dataset_config
-from bayesnf import evaluate
+import dataset_config
+import evaluate
 import jax
 import pandas as pd
 import pytest

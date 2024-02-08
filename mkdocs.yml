@@ -70,6 +70,10 @@ plugins:
                     - import jax
                     - jax.ShapeDtypeStruct.__module__ = "jax"
                     - jax.core.ClosedJaxpr.__module__ = "jax.core"
+                    - import sys
+                    - import os
+                    - sys.path.insert(0, os.path.abspath('./src/'))
+
 
                 rendering:
                     # show_root_heading: true  # actually display anything at all...
@@ -84,7 +88,6 @@ plugins:
 nav:
     - 'index.md'
     - Reference:
+          - 'api/inference.md'
           - 'api/models.md'
           - 'api/spatiotemporal.md'
-          - 'api/inference.md'
-          - 'api/evaluate.md'

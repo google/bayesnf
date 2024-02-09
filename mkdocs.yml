@@ -41,7 +41,6 @@ watch:
     - src
 
 extra_javascript:
-    # Make MathJax work
     # https://squidfunk.github.io/mkdocs-material/reference/mathjax/
     - _static/mathjax.js
     - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -62,23 +61,23 @@ markdown_extensions:
         toc_depth: 4
 
 plugins:
-    - search  # default search plugin; needs manually re-enabling when using any other plugins
-    - autorefs  # Cross-links to headings
+    # https://www.mkdocs.org/dev-guide/plugins/
+    - search
+    - autorefs  # https://github.com/mkdocstrings/autorefs
     - mkdocstrings:
         default_handler: python
         handlers:
             python:
-                paths:
-                    - src
+                paths: src
                 options:
-                    # show_root_heading: true  # actually display anything at all...
+                    # https://mkdocstrings.github.io/python/usage/
                     show_symbol_type_heading: true
                     show_symbol_type_toc: true
-                    show_root_full_path: false  # display "diffrax.asdf" not just "asdf"
+                    show_root_full_path: false
                     show_if_no_docstring: false
                     show_signature_annotations: false
-                    show_source: true  # don't include source code
-                    members_order: source  # order methods according to their order of definition in the source code, not alphabetical order
+                    show_source: true
+                    members_order: source
                     heading_level: 4
                     line_length: 120
                     separate_signature: true

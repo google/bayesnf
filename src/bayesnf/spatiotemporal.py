@@ -270,7 +270,7 @@ class BayesianNeuralFieldEstimator:
         'interactions': self._get_interactions(),
     }
 
-  def predict(self, table, quantiles=(0.5,)):
+  def predict(self, table, quantiles=(0.5,), approximate_quantiles=False):
     test_data = self.data_handler.get_test(table)
     return inference.predict_bnf(
         test_data,
@@ -279,7 +279,7 @@ class BayesianNeuralFieldEstimator:
         model_args=self._model_args(test_data.shape),
         quantiles=quantiles,
         ensemble_dims=self._ensemble_dims,
-        approximate_quantiles=False,
+        approximate_quantiles=approximate_quantiles,
     )
 
   def fit(self, table, seed):
@@ -349,18 +349,6 @@ class BayesianNeuralFieldMLE(BayesianNeuralFieldMAP):
   """Fit BNF using MLE estimation."""
 
   _prior_weight = 0.0
-
-  def predict(self, table, quantiles=(0.5,)):
-    test_data = self.data_handler.get_test(table)
-    return inference.predict_bnf(
-        test_data,
-        self.observation_model,
-        params=self.params_,
-        model_args=self._model_args(test_data.shape),
-        quantiles=quantiles,
-        ensemble_dims=self._ensemble_dims,
-        approximate_quantiles=True,
-    )
 
 
 class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):

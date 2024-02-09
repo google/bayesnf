@@ -1,0 +1,3 @@
+# BayesianNeuralFieldMLE
+
+::: bayesnf.spatiotemporal.BayesianNeuralFieldMLE

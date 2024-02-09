@@ -1,0 +1,3 @@
+# BayesianNeuralFieldMAP
+
+::: bayesnf.spatiotemporal.BayesianNeuralFieldMAP

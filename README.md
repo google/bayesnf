@@ -1,4 +1,4 @@
-# bayesnf
+# Bayesian Neural Fields for Spatiotemporal Prediction
 
 [![Unittests](https://github.com/google/bayesnf/actions/workflows/pytest_and_autopublish.yml/badge.svg)](https://github.com/google/bayesnf/actions/workflows/pytest_and_autopublish.yml)
 [![PyPI version](https://badge.fury.io/py/bayesnf.svg)](https://badge.fury.io/py/bayesnf)

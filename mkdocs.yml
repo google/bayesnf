@@ -31,12 +31,18 @@ site_url: https://google.github.io/bayesnf
 
 repo_url: https://github.com/google/bayesnf
 repo_name: google/bayesnf
-edit_uri: ""  # No edit button, as some of our pages are in /docs and some in /examples via symlink, so it's impossible for them all to be accurate
+edit_uri: ""
 
-strict: true  # Don't allow warnings during the build process
+# Do not allow warnings during the build process
+strict: true
+
+# Detect changes in the src/ code.
+watch:
+    - src
 
 extra_javascript:
-    # The below three make MathJax work, see https://squidfunk.github.io/mkdocs-material/reference/mathjax/
+    # Make MathJax work
+    # https://squidfunk.github.io/mkdocs-material/reference/mathjax/
     - _static/mathjax.js
     - https://polyfill.io/v3/polyfill.min.js?features=es6
     - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
@@ -62,32 +68,28 @@ plugins:
         default_handler: python
         handlers:
             python:
-                setup_commands:
-                    - import pytkdocs_tweaks
-                    - pytkdocs_tweaks.main()
-                    - import jaxtyping
-                    - jaxtyping.set_array_name_format("array")
-                    - import jax
-                    - jax.ShapeDtypeStruct.__module__ = "jax"
-                    - jax.core.ClosedJaxpr.__module__ = "jax.core"
-                    - import sys
-                    - import os
-                    - sys.path.insert(0, os.path.abspath('./src/'))
-
-
-                rendering:
+                paths:
+                    - src
+                options:
                     # show_root_heading: true  # actually display anything at all...
-                    show_root_full_path: true  # display "diffrax.asdf" not just "asdf"
+                    show_symbol_type_heading: true
+                    show_symbol_type_toc: true
+                    show_root_full_path: false  # display "diffrax.asdf" not just "asdf"
                     show_if_no_docstring: false
                     show_signature_annotations: false
-                    show_source: false  # don't include source code
+                    show_source: true  # don't include source code
                     members_order: source  # order methods according to their order of definition in the source code, not alphabetical order
                     heading_level: 4
                     line_length: 120
+                    separate_signature: true
+                    docstring_section_style: spacy
 
 nav:
-    - 'index.md'
-    - Reference:
-          - 'api/inference.md'
-          - 'api/models.md'
-          - 'api/spatiotemporal.md'
+    - Home: 'index.md'
+    - API:
+        - 'api/BayesianNeuralFieldEstimator.md'
+        - 'api/BayesianNeuralFieldVI.md'
+        - 'api/BayesianNeuralFieldMAP.md'
+        - 'api/BayesianNeuralFieldMLE.md'
+    # - Tutorials:
+    #     - 'api/BayesianNeuralFieldMLE.md'

@@ -194,12 +194,12 @@ class BayesianNeuralFieldEstimator:
 
   def __init__(
       self,
-      num_seasonal_harmonics: Sequence[int],
-      seasonality_periods: Sequence[float | str],
       feature_cols: Sequence[str],
       target_col: str,
       timetype: str,
       freq: str,
+      seasonality_periods: Sequence[float | str] | None = None,
+      num_seasonal_harmonics: Sequence[int] | None = None,
       fourier_degrees: Sequence[float] | None = None,
       observation_model: str = 'NORMAL',
       depth: int = 2,
@@ -261,9 +261,14 @@ class BayesianNeuralFieldEstimator:
     return {
         'depth': self.depth,
         'input_scales': self.data_handler.get_input_scales(),
-        'num_seasonal_harmonics': np.array(self.num_seasonal_harmonics),
-        'seasonality_periods': seasonalities_to_array(
-            self.seasonality_periods, self.freq),
+        'num_seasonal_harmonics':
+            np.array(self.num_seasonal_harmonics)
+            if self.num_seasonal_harmonics is not None
+            else np.zeros(0),
+        'seasonality_periods':
+            seasonalities_to_array(self.seasonality_periods, self.freq)
+            if self.seasonality_periods is not None
+            else np.zeros(0),
         'width': self.width,
         'init_x': batch_shape,
         'fourier_degrees': self._get_fourier_degrees(batch_shape),

@@ -1,0 +1,3 @@
+# BayesianNeuralFieldVI
+
+::: bayesnf.spatiotemporal.BayesianNeuralFieldVI

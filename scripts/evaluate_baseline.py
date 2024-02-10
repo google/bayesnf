@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Run the baseline models on evaluation data."""
+"""Evaluate baseline prediction methods on spatiotemporal datasets."""
 
 from collections.abc import Sequence
 import os

@@ -1,0 +1,3 @@
+# BayesianNeuralFieldEstimator
+
+::: bayesnf.spatiotemporal.BayesianNeuralFieldEstimator

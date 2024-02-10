@@ -369,7 +369,8 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
       ensemble_size=16,
       learning_rate=0.01,
       num_epochs=1_000,
-      sample_size=5,
+      sample_size_posterior=30,
+      sample_size_divergence=5,
       kl_weight=0.1,
       batch_size=None,
   ):
@@ -389,7 +390,8 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
         ensemble_size=ensemble_size,
         learning_rate=learning_rate,
         num_epochs=num_epochs,
-        sample_size=sample_size,
+        sample_size_posterior=sample_size_posterior,
+        sample_size_divergence=sample_size_divergence,
         kl_weight=kl_weight,
         batch_size=batch_size,
     )

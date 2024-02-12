@@ -474,7 +474,10 @@ class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
 
       seed (jax.random.PRNGKey): The jax random key.
 
-      ensemble_size (int): Number of particles in the ensemble.
+      ensemble_size (int): Number of particles in the ensemble. It currently
+        an error if `ensemble_size < jax.device_count`, but will be fixed
+        in https://github.com/google/bayesnf/issues/28.
+
 
       learning_rate (float): Learning rate for SGD.
 
@@ -484,6 +487,9 @@ class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
         meaning full-batch. Each epoch will perform `len(table) // batch_size`
         SGD updates.
     """
+    if ensemble_size < jax.device_count():
+      raise ValueError('ensemble_size cannot be smaller than device_count. '\
+        'https://github.com/google/bayesnf/issues/28.')
     train_data = self.data_handler.get_train(table)
     train_target = self.data_handler.get_target(table)
     if batch_size is None:

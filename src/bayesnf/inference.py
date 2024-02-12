@@ -342,7 +342,8 @@ def fit_vi(
     ensemble_size: int,
     learning_rate: float,
     num_epochs: int,
-    sample_size: int,
+    sample_size_divergence: int,
+    sample_size_posterior: int,
     kl_weight: float,
     batch_size: int | None = None,
 ) -> tuple[
@@ -365,7 +366,8 @@ def fit_vi(
       learning_rate=learning_rate,
       num_epochs=num_epochs,
       seed=seed,
-      sample_size=sample_size,
+      sample_size=sample_size_divergence,
+      num_samples=sample_size_posterior,
       kl_weight=kl_weight,
       batch_size=batch_size,
   )
@@ -652,7 +654,7 @@ def ensemble_vi(
     seed: `jax.random.PRNGKey` random seed.
     sample_size: `int` number of Monte Carlo samples to use in estimating the
       variational divergence.
-    num_samples: `int` number of posterior samples to return.
+    num_samples: `int` number of posterior samples to return per surrogate.
     kl_weight: A positive `float`.  During inference, we attempt to find a
       surrogate posterior `q(z)` that maximizes a version of the ELBO with the
       `KL(surrogate posterior || prior)` term scaled by `kl_weight` -- i.e.

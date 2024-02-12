@@ -194,12 +194,12 @@ class BayesianNeuralFieldEstimator:
 
   def __init__(
       self,
-      num_seasonal_harmonics: Sequence[int],
-      seasonality_periods: Sequence[float | str],
       feature_cols: Sequence[str],
       target_col: str,
       timetype: str,
       freq: str,
+      seasonality_periods: Sequence[float | str] | None = None,
+      num_seasonal_harmonics: Sequence[int] | None = None,
       fourier_degrees: Sequence[float] | None = None,
       observation_model: str = 'NORMAL',
       depth: int = 2,
@@ -261,16 +261,21 @@ class BayesianNeuralFieldEstimator:
     return {
         'depth': self.depth,
         'input_scales': self.data_handler.get_input_scales(),
-        'num_seasonal_harmonics': np.array(self.num_seasonal_harmonics),
-        'seasonality_periods': seasonalities_to_array(
-            self.seasonality_periods, self.freq),
+        'num_seasonal_harmonics':
+            np.array(self.num_seasonal_harmonics)
+            if self.num_seasonal_harmonics is not None
+            else np.zeros(0),
+        'seasonality_periods':
+            seasonalities_to_array(self.seasonality_periods, self.freq)
+            if self.seasonality_periods is not None
+            else np.zeros(0),
         'width': self.width,
         'init_x': batch_shape,
         'fourier_degrees': self._get_fourier_degrees(batch_shape),
         'interactions': self._get_interactions(),
     }
 
-  def predict(self, table, quantiles=(0.5,)):
+  def predict(self, table, quantiles=(0.5,), approximate_quantiles=False):
     test_data = self.data_handler.get_test(table)
     return inference.predict_bnf(
         test_data,
@@ -279,7 +284,7 @@ class BayesianNeuralFieldEstimator:
         model_args=self._model_args(test_data.shape),
         quantiles=quantiles,
         ensemble_dims=self._ensemble_dims,
-        approximate_quantiles=False,
+        approximate_quantiles=approximate_quantiles,
     )
 
   def fit(self, table, seed):
@@ -350,18 +355,6 @@ class BayesianNeuralFieldMLE(BayesianNeuralFieldMAP):
 
   _prior_weight = 0.0
 
-  def predict(self, table, quantiles=(0.5,)):
-    test_data = self.data_handler.get_test(table)
-    return inference.predict_bnf(
-        test_data,
-        self.observation_model,
-        params=self.params_,
-        model_args=self._model_args(test_data.shape),
-        quantiles=quantiles,
-        ensemble_dims=self._ensemble_dims,
-        approximate_quantiles=True,
-    )
-
 
 class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
   """Fit BNF using VI estimation."""
@@ -376,7 +369,8 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
       ensemble_size=16,
       learning_rate=0.01,
       num_epochs=1_000,
-      sample_size=5,
+      sample_size_posterior=30,
+      sample_size_divergence=5,
       kl_weight=0.1,
       batch_size=None,
   ):
@@ -396,7 +390,8 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
         ensemble_size=ensemble_size,
         learning_rate=learning_rate,
         num_epochs=num_epochs,
-        sample_size=sample_size,
+        sample_size_posterior=sample_size_posterior,
+        sample_size_divergence=sample_size_divergence,
         kl_weight=kl_weight,
         batch_size=batch_size,
     )

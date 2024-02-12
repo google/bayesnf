@@ -80,7 +80,8 @@ def run_experiment(
     base_cls = spatiotemporal.BayesianNeuralFieldVI
     objective_specific_inference_args = {
         'kl_weight': inference_config.get('kl_weight', 1.0),
-        'sample_size': inference_config.get('sample_size', 10),
+        'sample_size_divergence': inference_config.get(
+            'sample_size_divergence', 10),
     }
   elif objective == 'map':
     base_cls = spatiotemporal.BayesianNeuralFieldMAP
@@ -207,7 +208,7 @@ def get_inference_config():
           'learning_rate': 0.01,
           'batch_size': 3500,
           'kl_weight': 0.2,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['air_quality']['mle'] = ret['air_quality']['map']
@@ -224,7 +225,7 @@ def get_inference_config():
           'learning_rate': 0.01,
           'batch_size': 3944,
           'kl_weight': 0.1,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['wind']['mle'] = ret['wind']['map']
@@ -241,7 +242,7 @@ def get_inference_config():
           'learning_rate': 0.01,
           'batch_size': 3800,
           'kl_weight': 0.2,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['air']['mle'] = ret['air']['map']
@@ -258,7 +259,7 @@ def get_inference_config():
           'learning_rate': 0.01,
           'batch_size': 511,
           'kl_weight': 0.1,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['chickenpox']['mle'] = ret['chickenpox']['map']

@@ -299,15 +299,6 @@ def get_inference_config():
   }
   ret['sst']['mle'] = ret['sst']['map']
 
-  ret['M3Month'] = {
-      'map': {
-          'num_particles': 64,
-          'num_epochs': 5000,
-          'learning_rate': 0.01,
-      },
-  }
-  ret['M3Month']['mle'] = ret['M3Month']['map']
-
   return ret
 
 

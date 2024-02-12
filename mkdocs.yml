@@ -38,6 +38,7 @@ strict: true
 
 # Detect changes in the src/ code.
 watch:
+    - README.md
     - src
 
 extra_javascript:
@@ -81,6 +82,7 @@ plugins:
                     heading_level: 4
                     line_length: 120
                     separate_signature: true
+                    line_length: 50
                     docstring_section_style: spacy
 
 nav:

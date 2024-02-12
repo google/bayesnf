@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Model code for spatiotemporal Bayesian neural field."""
+"""API for Bayesian Neural Field estimators."""
+
 from collections.abc import Sequence
 
 import jax
@@ -186,7 +187,21 @@ class SpatiotemporalDataHandler:
 
 
 class BayesianNeuralFieldEstimator:
-  """Base class for BNF estimator."""
+  """Base class for BayesNF estimators. This class should not be initialized
+  directly, but rather one of the three subclasses that implementing
+  different model learning procedures:
+
+  - [BayesianNeuralFieldVI](BayesianNeuralFieldVI.md), for
+    ensembles of surrogate posteriors from variational inference.
+
+  - [BayesianNeuralFieldMAP](BayesianNeuralFieldMAP.md), for
+    stochastic ensembles of maximum-a-posteriori estimates.
+
+  - [BayesianNeuralFieldMLE](BayesianNeuralFieldMLE.md), for
+    stochastic ensembles of maximum likelihood estimates.
+
+  All three classes share the same `__init__` method described below.
+  """
 
   _ensemble_dims: int
   _prior_weight: float = 1.0
@@ -194,19 +209,81 @@ class BayesianNeuralFieldEstimator:
 
   def __init__(
       self,
+      *,
       feature_cols: Sequence[str],
       target_col: str,
-      timetype: str,
-      freq: str,
       seasonality_periods: Sequence[float | str] | None = None,
       num_seasonal_harmonics: Sequence[int] | None = None,
       fourier_degrees: Sequence[float] | None = None,
-      observation_model: str = 'NORMAL',
+      interactions: Sequence[tuple[int, int]] | None = None,
+      freq: str,
+      timetype: str = 'index',
       depth: int = 2,
       width: int = 512,
+      observation_model: str = 'NORMAL',
       standardize: Sequence[str] | None = None,
-      interactions: Sequence[tuple[int, int]] | None = None,
-  ):
+      ):
+    """Shared initialization for subclasses of BayesianNeuralFieldEstimator.
+
+    Args:
+      feature_cols:
+        Names of columns to use as features in the training
+        data frame. The first entry denotes the name of the time variable,
+        the remaining entries (if any) denote names of the spatial features.
+
+      target_col:
+        Name of the target column representing the spatial field.
+
+      seasonality_periods:
+        A list of numbers representing the seasonal frequencies of the data
+        in the time domain. It is also possible to specify a string such as
+        'W', 'D', etc. corresponding to a valid Pandas frequency: see the
+        Pandas [Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+        for valid values.
+
+      num_seasonal_harmonics:
+        A list of seasonal harmonics, one for each entry in
+        `seasonality_periods`. The number of seasonal harmonics (h) for a
+        given seasonal period `p` must satisfy `h < p//2`.
+
+      fourier_degrees:
+        A list of integer degrees for the Fourier features of the inputs.
+        If given, must have the same length as `feature_cols`.
+
+      interactions:
+        A list of tuples of column indexes for the first-order
+        interactions. For example `[(0,1), (1,2)]` creates two interaction
+        features:
+
+        - `feature_cols[0] * feature_cols[1]`
+        - `feature_cols[1] * feature_cols[2]`
+
+      freq:
+        A frequency string for the sampling rate at which the data is
+        collected: see the Pandas
+        [Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+        for valid values.
+
+      timetype:
+        Must be specified as `index`. The general versions will be
+        integrated pending https://github.com/google/bayesnf/issues/16.
+
+      depth:
+        The number of hidden layers in the BayesNF architecture.
+
+      width:
+        The number of hidden units in each layer.
+
+      observation_model:
+        The aleatoric noise model for the observed data. The options are
+        `NORMAL` (Gaussian noise), `NB` (negative binomial noise), or `ZNB`
+        (zero-inflated negative binomial noise).
+
+      standardize:
+        List of columns that should be standardized. It is highly
+        recommended to standardize `feature_cols[1:]`. It is an error if
+        `features_cols[0]` (the time variable) is in `standardize`.
+    """
     self.num_seasonal_harmonics = num_seasonal_harmonics
     self.seasonality_periods = seasonality_periods
     self.observation_model = observation_model
@@ -276,6 +353,31 @@ class BayesianNeuralFieldEstimator:
     }
 
   def predict(self, table, quantiles=(0.5,), approximate_quantiles=False):
+    """Make predictions of the target column at new times.
+
+    Args:
+      table (pandas.DataFrame):
+        Field locations at which to make new predictions. Same as `table` in
+        [`fit`](), except that `self.target_col` need not be in `table`.
+
+      quantiles (Sequence[float]):
+        The list of quantiles to compute.
+
+    Returns:
+      means (np.ndarray):
+        The predicted means from each particle in the learned ensemble.
+        The shape is `(num_devices, ensemble_size // num_devices, len(table))`
+        and can be flattened to a 2D array using `np.row_stack(means)`.
+        Related https://github.com/google/bayesnf/issues/17
+
+      quantiles (List[np.ndarray]):
+        A list of numpy arrays, one per requested quantile.
+        The length of each array in the list is `len(table)`.
+
+      approximate (bool):
+        If `False,` uses Chandrupatla root finding to compute quantiles.
+        If `True`, uses a heuristic approximation of the quantiles.
+    """
     test_data = self.data_handler.get_test(table)
     return inference.predict_bnf(
         test_data,
@@ -288,10 +390,42 @@ class BayesianNeuralFieldEstimator:
     )
 
   def fit(self, table, seed):
+    """Run inference given a training data `table` and `seed`.
+    Cannot be directly called on `BayesianNeuralFieldEstimator`.
+
+    Args:
+      table (pandas.DataFrame):
+        A pandas DataFrame representing the
+        training data. It has the following requirements:
+
+        - The columns of `table` should contain all `self.feature_cols`
+          and the `self.target_col`.
+
+        - The type of the "time" column (i.e., `self.feature_cols[0]`)
+          should be `datetime`. To ensure this requirement holds, see
+          [`pandas.to_datetime`](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html).
+          The types of the remaining feature columns should be numeric.
+
+      seed (jax.random.PRNGKey): The jax random key.
+    """
     raise NotImplementedError('Should be implemented by subclass')
 
   def likelihood_model(self, table: pd.DataFrame) -> tfd.Distribution:
-    """Access the likelihood distribution after calling `.fit`."""
+    """Access the predictive distribution over new field values in `table`.
+
+    NOTE: Must be called after [`fit`]().
+
+    Args:
+      table (pandas.DataFrame):
+        Field locations at which to make new predictions. Same as `table` in
+        [`fit`](), except that `self.target_col` need not be in `table`.
+
+    Returns:
+      A probability distribution representing the predictive distribution
+        over `self.target_col` at the new field values in `table`.
+        See [tfp.distributions.Distribution](https://www.tensorflow.org/probability/api_docs/python/tfp/distributions/Distribution)
+        for the methods associated with this object.
+    """
     test_data = self.data_handler.get_test(table)
     mlp, mlp_template = inference.make_model(
         **self._model_args(test_data.shape))
@@ -314,7 +448,10 @@ class BayesianNeuralFieldEstimator:
 
 
 class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
-  """Fit BNF using MAP estimation."""
+  """Implementation of
+  [BayesianNeuralFieldEstimator](BayesianNeuralFieldEstimator.md) which
+  fits models using stochastic ensembles of maximum-a-posteriori estimates.
+  """
 
   _ensemble_dims = 2
 
@@ -327,7 +464,26 @@ class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
       num_epochs=5_000,
       batch_size=None,
       num_splits=1,
-  ):
+      ):
+    """Run inference using stochastic MAP ensembles.
+
+    Args:
+      table (pandas.DataFrame):
+        See documentation of `table` in
+        bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit.
+
+      seed (jax.random.PRNGKey): The jax random key.
+
+      ensemble_size (int): Number of particles in the ensemble.
+
+      learning_rate (float): Learning rate for SGD.
+
+      num_epochs (int): Number of full epochs through the training data.
+
+      batch_size (None | int): Batch size for SGD. Default is `None`,
+        meaning full-batch. Each epoch will perform `len(table) // batch_size`
+        SGD updates.
+    """
     train_data = self.data_handler.get_train(table)
     train_target = self.data_handler.get_target(table)
     if batch_size is None:
@@ -351,13 +507,20 @@ class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
 
 
 class BayesianNeuralFieldMLE(BayesianNeuralFieldMAP):
-  """Fit BNF using MLE estimation."""
+  """Implementation of
+  [BayesianNeuralFieldEstimator](BayesianNeuralFieldEstimator.md) which
+  fits models using stochastic ensembles of maximum likelihood estimates.
+  """
 
   _prior_weight = 0.0
 
 
 class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
-  """Fit BNF using VI estimation."""
+  """Implementation of
+  [BayesianNeuralFieldEstimator](BayesianNeuralFieldEstimator.md) which
+  fits models using stochastic ensembles of surrogate posteriors from
+  variational inference.
+  """
 
   _ensemble_dims = 3
   _scale_epochs_by_batch_size = True
@@ -373,7 +536,51 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
       sample_size_divergence=5,
       kl_weight=0.1,
       batch_size=None,
-  ):
+      ):
+    """Run inference using stochastic variational inference ensembles.
+
+    Args:
+      table (pandas.DataFrame):
+        See documentation of [`table`][bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit]
+        in the base class.
+
+      seed (jax.random.PRNGKey): The jax random key.
+
+      ensemble_size (int): Number of particles (i.e., surrogate posteriors)
+        in the ensemble, **per device**. The available devices can be found
+        via `jax.devices()`.
+
+      learning_rate (float): Learning rate for SGD.
+
+      num_epochs (int): Number of full epochs through the training data.
+
+      sample_size_posterior (int): Number of samples of "posterior" model
+        parameters draw from each surrogate posterior when making
+        predictions.
+
+      sample_size_divergence (int): number of Monte Carlo samples to use in
+        estimating the variational divergence. Larger values may stabilize
+        the optimization, but at higher cost per step in time and memory.
+        See [`tfp.vi.fit_surrogate_posterior_stateless`](https://www.tensorflow.org/probability/api_docs/python/tfp/vi/fit_surrogate_posterior_stateless)
+        for further details.
+
+      kl_weight (float): Weighting of the KL divergence term in VI. The
+        goal is to find a surrogate posterior `q(z)` that maximizes a
+        version of the ELBO with the `KL(surrogate posterior || prior)`
+        term scaled by `kl_weight`
+
+            E_z~q [log p(x|z)] - kl_weight * KL(q || p)
+
+        Reference:
+        > Weight Uncertainty in Neural Network
+        > Charles Blundell, Julien Cornebise, Koray Kavukcuoglu, Daan Wierstra.
+        > Proceedings of the 32nd International Conference on Machine Learning.
+        > PMLR 37:1613-1622, 2015. <https://proceedings.mlr.press/v37/blundell15>
+
+      batch_size (None | int): If specified, the log probability in each
+        step of variational inference  is computed on a batch of this size.
+        Default is `None`, meaning full-batch.
+    """
     train_data = self.data_handler.get_train(table)
     train_target = self.data_handler.get_target(table)
     if batch_size is None:

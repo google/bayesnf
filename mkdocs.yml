@@ -92,5 +92,5 @@ nav:
         - 'api/BayesianNeuralFieldVI.md'
         - 'api/BayesianNeuralFieldMAP.md'
         - 'api/BayesianNeuralFieldMLE.md'
-    # - Tutorials:
-    #     - 'api/BayesianNeuralFieldMLE.md'
+    - Tutorials:
+        - Hungarian Chickenpox: 'tutorials/BayesNF_Tutorial_on_Hungarian_Chickenpox.md'

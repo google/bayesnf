@@ -276,7 +276,7 @@ def get_inference_config():
           'learning_rate': 0.01,
           'batch_size': 3300,
           'kl_weight': 0.2,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['coprecip']['mle'] = ret['coprecip']['map']
@@ -294,19 +294,10 @@ def get_inference_config():
           'learning_rate': 0.005,
           'batch_size': 8845,
           'kl_weight': 0.5,
-          'sample_size': 5,
+          'sample_size_divergence': 5,
       },
   }
   ret['sst']['mle'] = ret['sst']['map']
-
-  ret['M3Month'] = {
-      'map': {
-          'num_particles': 64,
-          'num_epochs': 5000,
-          'learning_rate': 0.01,
-      },
-  }
-  ret['M3Month']['mle'] = ret['M3Month']['map']
 
   return ret
 

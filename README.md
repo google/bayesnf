@@ -22,14 +22,17 @@ gradient descent for handling large-scale data.
 
 ## Installation
 
-`bayesnf` can be installed from the Python Package Index (PyPI) using:
+`bayesnf` can be installed from the Python Package Index
+([PyPI](https://pypi.org/project/bayesnf/)) using:
 
 ```
 python -m pip install .
 ```
 
-Typical install time is 1 minute. This software is tested on Python 3.9.
-Experiments were run using TPU accelerators.
+The typical install time is 1 minute. This software is tested on Python 3.9
+with a standard Debian GNU/Linux setup. The large-scale experiments in
+`scripts/` were run using TPU v3-8 accelerators. For running BayesNF
+locally on medium to large-scale data, a GPU is required at minimum.
 
 ## Documentation and Tutorials
 

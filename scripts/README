@@ -6,30 +6,30 @@ Step 1. Obtain the training data
     $ mkdir -p data/
     $ tar -zxv -C data -f datasets.tar.gz
 
-Step 2. Run the scripts on the test files. Original experiments were run
-  on a 2x2 TPU v5e accelerator, available on Google Cloud
-  https://cloud.google.com/tpu/docs/supported-tpu-configurations.
+Step 2. Run the BayesNF evaluation scripts. Original experiments
+  were run on a TPU v3-8 accelerator, available on Google Cloud
+  https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu-v3-config
 
   For the command-line interface, run
 
     $ python evaluate.py --help
 
-        Evaluate ST-BNF.
-        flags:
+      Evaluate BayesianNeuralField on spatiotemporal datasets.
+      flags:
 
-        evaluate.py:
-          --data_root: Location of input data.
-          --dataset: <air_quality|wind|air|chickenpox|coprecip|sst>: Dataset name
-          --num_particles: Override the number of particles for inference.
-            (an integer)
-          --objective: <map|mle|vi>: Training objective
-            (default: 'map')
-          --output_dir: Output directory.
-          --start_id: Run experiments on series with IDs >= this value.
-            (default: '5')
-            (an integer)
-          --stop_id: Run experiments on series with IDs < this value.
-            (an integer)
+      evaluate.py:
+        --data_root: Location of input data.
+        --dataset: <air_quality|wind|air|chickenpox|coprecip|sst>: Dataset name
+        --num_particles: Override the number of particles for inference.
+          (an integer)
+        --objective: <map|mle|vi>: Training objective
+          (default: 'map')
+        --output_dir: Output directory.
+        --start_id: Run experiments on series with IDs >= this value.
+          (default: '5')
+          (an integer)
+        --stop_id: Run experiments on series with IDs < this value.
+          (an integer)
 
   An example invocation is the following:
 
@@ -40,3 +40,33 @@ Step 2. Run the scripts on the test files. Original experiments were run
       --objective=map \
       --start_id=5 \
       --stop_id=6
+
+Step 3. Run the baseline evaluation scripts.
+
+  For the command-line interface, run
+
+    $ python evaluate_baseline.py --help
+
+      Evaluate baseline prediction methods on spatiotemporal datasets.
+      flags:
+
+      evaluate_baseline.py:
+        --algorithm: <SVGP|ST-SVGP|MF-ST-SVGP|RF|GBOOST|TSREG>: Algorithm name
+        --data_root: Location of input data.
+        --dataset: <air_quality|wind|air|chickenpox|coprecip|sst>: Dataset name
+        --gboost_estimators: Number of GBOOST estimators.
+          (default: '100')
+          (an integer)
+        --[no]gboost_featurize: Add Fourier features to GBOOST baseline.
+          (default: 'false')
+        --output_dir: Output directory.
+        --start_id: Run experiments on series with IDs >= this value.
+          (default: '5')
+          (an integer)
+        --stop_id: Run experiments on series with IDs < this value.
+          (an integer)
+        --svgp_num_z: SVGP number of inducing points.
+          (default: '2000')
+          (an integer)
+        --tsreg_method: <OLS|RIDGE|LASSO>: Method for trend-surface regression.
+          (default: 'OLS')

@@ -26,7 +26,7 @@ gradient descent for handling large-scale data.
 ([PyPI](https://pypi.org/project/bayesnf/)) using:
 
 ```
-python -m pip install .
+python -m pip install bayesnf
 ```
 
 The typical install time is 1 minute. This software is tested on Python 3.9

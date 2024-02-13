@@ -472,13 +472,14 @@ class BayesianNeuralFieldMAP(BayesianNeuralFieldEstimator):
       num_epochs=5_000,
       batch_size=None,
       num_splits=1,
-      ):
+      ) -> BayesianNeuralFieldEstimator:
     """Run inference using stochastic MAP ensembles.
 
     Args:
       table (pandas.DataFrame):
-        See documentation of `table` in
-        bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit.
+        See documentation of
+        [`table`][bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit]
+        in the base class.
 
       seed (jax.random.PRNGKey): The jax random key.
 
@@ -558,13 +559,13 @@ class BayesianNeuralFieldVI(BayesianNeuralFieldEstimator):
       sample_size_divergence=5,
       kl_weight=0.1,
       batch_size=None,
-      ):
+      ) -> BayesianNeuralFieldEstimator:
     """Run inference using stochastic variational inference ensembles.
 
     Args:
       table (pandas.DataFrame):
         See documentation of
-        [`table`](bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit)
+        [`table`][bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit]
         in the base class.
 
       seed (jax.random.PRNGKey): The jax random key.

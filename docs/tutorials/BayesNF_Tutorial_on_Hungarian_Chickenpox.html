@@ -14597,8 +14597,7 @@ target="_blank" href="https://colab.research.google.com/github/google/bayesnf/bl
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Download latest version of bayesnf.</span>
-<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>--quiet<span class="w"> </span>https://github.com/google/bayesnf
-<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>bayesnf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>--quiet<span class="w"> </span>install<span class="w"> </span>.
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>bayesnf
 </pre></div>
 
      </div>
@@ -14614,7 +14613,7 @@ target="_blank" href="https://colab.research.google.com/github/google/bayesnf/bl
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Intsall Python libraries for plotting.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Install Python libraries for plotting.</span>
 <span class="o">!</span>pip<span class="w"> </span>-q<span class="w"> </span>install<span class="w"> </span>cartopy
 <span class="o">!</span>pip<span class="w"> </span>-q<span class="w"> </span>install<span class="w"> </span>contextily
 </pre></div>
@@ -15161,7 +15160,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Fitting-the-Estimator">Fitting the Estimator<a class="anchor-link" href="#Fitting-the-Estimator">&#182;</a></h2><p>All three estimators provide a <code>.fit</code> method, with slightly different signatures. The configuration below trains an ensemble comprised of 64 particles for 5000 epochs. These commands were run on a TPU v3 with 8 cores; the compute requirements should be adjusted for the available resources.</p>
+<h2 id="Fitting-the-Estimator">Fitting the Estimator<a class="anchor-link" href="#Fitting-the-Estimator">&#182;</a></h2><p>All three estimators provide a <code>.fit</code> method, with slightly different signatures. The configuration below trains an ensemble comprised of 64 particles for 5000 epochs. These commands require ~120 seconds on a TPU v3-8; the <code>ensemble_size</code> and <code>num_epochs</code> values should be adjusted depending on the available resources.</p>
 
 </div>
 </div>

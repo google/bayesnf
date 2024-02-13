@@ -14,25 +14,26 @@
 
 """Evaluate baseline prediction methods on spatiotemporal datasets."""
 
-from collections.abc import Sequence
 import os
-from pathlib import Path  # pylint:disable=g-importing-member
 import time
 import types
+
+from collections.abc import Sequence
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import scipy
 
 from absl import app
 from absl import flags
 from absl import logging
 from bayesnf.models import make_fourier_features
 from bayesnf.models import make_seasonal_features
-import evaluate
 from dataset_config import DATASET_CONFIG
 from dataset_config import MODEL_CONFIG
-import numpy as np
-import pandas as pd
-import scipy
-from scipy.cluster.vq import kmeans2  # pylint:disable=g-importing-member
-from tqdm import tqdm  # pylint:disable=g-importing-member
+from scipy.cluster.vq import kmeans2
+from tqdm import tqdm
 
 
 _DATA_ROOT = flags.DEFINE_string(
@@ -150,6 +151,54 @@ SVGP_CONFIG = {
             8000: 3000
             }),
     }
+
+
+def drop_nan(x, y):
+  """Drop elements of x and y at indexes where y is NaN."""
+  keep = ~np.isnan(y)
+  return (x[keep], y[keep])
+
+
+def create_spatiotemporal_grid(x, y):
+  """Create a spatiotemporal grid from feature matrix x and data vector y.
+
+
+  Args:
+    x: Feature matrix. Rows are i.i.d. instances, first column is "time",
+    and remaining columns are "location" features.
+    y: Observations.
+  Returns:
+    Tuple (t, R, y) representing grid of time, space, and observations.
+      - t is a column vector of unique time points.
+      - R[i] is a 2D array of spatial locations at time t[i].
+      - y[i][j] are observations at time t[i] and location R[i][j].
+  Notes:
+    Generalizes create_spatiotemporal_grid from BayesNewton.
+    https://github.com/AaltoML/BayesNewton/blob/ad5679439e58b6f53bbcc9708dc43452af26b8ac/bayesnewton/utils.py#L271
+  """
+  if y.ndim < 2:
+    y = y[:, np.newaxis]
+  num_spatial_dims = x.shape[1] - 1
+  sort_ind = np.lexsort([x[:, i] for i in range(num_spatial_dims, -1, -1)])
+  x = x[sort_ind]
+  y = y[sort_ind]
+  unique_time = np.unique(x[:, 0])
+  unique_space = np.unique(x[:, 1:], axis=0)
+  n_t = unique_time.shape[0]
+  n_r = unique_space.shape[0]
+  r = np.tile(unique_space, [n_t] + [1] * num_spatial_dims)
+  r_flat = r.reshape(-1, num_spatial_dims)
+  y_dummy = np.nan * np.zeros([n_t * n_r, 1])
+  time_duplicate = np.tile(unique_time, [n_r, 1]).T.flatten()
+  x_dummy = np.block([time_duplicate[:, None], r_flat])
+  x_all = np.vstack([x, x_dummy])
+  y_all = np.vstack([y, y_dummy])
+  x_unique, ind = np.unique(x_all, axis=0, return_index=True)
+  y_unique = y_all[ind]
+  grid_shape = (unique_time.shape[0],) + unique_space.shape
+  r_grid = x_unique[:, 1:].reshape(grid_shape)
+  y_grid = y_unique.reshape(grid_shape[:-1] + (1,))
+  return unique_time[:, None], r_grid, y_grid
 
 
 def get_dataset_tidy(
@@ -343,16 +392,16 @@ def run_experiment_bayesnewton(
   y_test_norm = (table.y_test - y_train_mu) / y_train_std
 
   # Data for training.
-  (X, Y) = evaluate.drop_nan(table.x_train, y_train_norm)
-  t, R, Y = evaluate.create_spatiotemporal_grid(X, Y)
+  (X, Y) = drop_nan(table.x_train, y_train_norm)
+  t, R, Y = create_spatiotemporal_grid(X, Y)
 
   # Data for RMSE scoring.
-  (X_test, Y_test) = evaluate.drop_nan(table.x_test, table.y_test)
-  t_test, R_test, Y_test = evaluate.create_spatiotemporal_grid(X_test, Y_test)
+  (X_test, Y_test) = drop_nan(table.x_test, table.y_test)
+  t_test, R_test, Y_test = create_spatiotemporal_grid(X_test, Y_test)
 
   # Data for NLPD scoring.
-  Y_test_norm = evaluate.drop_nan(table.x_test, y_test_norm)[1]
-  Y_test_norm = evaluate.create_spatiotemporal_grid(X_test, Y_test_norm)[2]
+  Y_test_norm = drop_nan(table.x_test, y_test_norm)[1]
+  Y_test_norm = create_spatiotemporal_grid(X_test, Y_test_norm)[2]
 
   var_f = 1.
   opt_z = sparse
@@ -454,7 +503,7 @@ def run_experiment_bayesnewton(
   index_probe = np.concatenate((table.index_train, table.index_test))
   x_probe = np.concatenate((table.x_train, table.x_test))
   y_probe = np.concatenate((table.y_train, table.y_test))
-  t_probe, R_probe, _ = evaluate.create_spatiotemporal_grid(x_probe, y_probe)
+  t_probe, R_probe, _ = create_spatiotemporal_grid(x_probe, y_probe)
   df_probe = pd.DataFrame(x_probe, index=index_probe)
   df_probe.index.name = '__index__'
   df_probe.reset_index(inplace=True)
@@ -524,8 +573,8 @@ def run_experiment_gpflow(
       target_col=DATASET_CONFIG_BASELINE[dataset]['target_col'],
       timetype=DATASET_CONFIG_BASELINE[dataset]['timetype'],
       standardize=DATASET_CONFIG_BASELINE[dataset]['standardize'])
-  (x_train, y_train) = evaluate.drop_nan(table.x_train, table.y_train)
-  (x_test, y_test) = evaluate.drop_nan(table.x_test, table.y_test)
+  (x_train, y_train) = drop_nan(table.x_train, table.y_train)
+  (x_test, y_test) = drop_nan(table.x_test, table.y_test)
 
   logging.info('x: %s', x_train.shape)
 
@@ -729,8 +778,8 @@ def run_experiment_rf(
       timetype=DATASET_CONFIG_BASELINE[dataset]['timetype'],
       standardize=DATASET_CONFIG_BASELINE[dataset]['standardize'],
       )
-  (x_train, y_train) = evaluate.drop_nan(table.x_train, table.y_train)
-  (x_test, y_test) = evaluate.drop_nan(table.x_test, table.y_test)
+  (x_train, y_train) = drop_nan(table.x_train, table.y_train)
+  (x_test, y_test) = drop_nan(table.x_test, table.y_test)
   start = time.time()
   regressor = RandomForestRegressor().fit(x_train, y_train)
   runtime = time.time() - start
@@ -834,8 +883,8 @@ def run_experiment_gboost(
         for z in (table.x_train, table.x_test)
     ]
 
-  (x_train_drop, y_train_drop) = evaluate.drop_nan(x_train, table.y_train)
-  (x_test_drop, y_test_drop) = evaluate.drop_nan(x_test, table.y_test)
+  (x_train_drop, y_train_drop) = drop_nan(x_train, table.y_train)
+  (x_test_drop, y_test_drop) = drop_nan(x_test, table.y_test)
 
   models = {}
   common_params = dict(
@@ -935,8 +984,8 @@ def run_experiment_tsreg(
         for z in (table.x_train, table.x_test)
     ]
 
-  (x_train_drop, y_train_drop) = evaluate.drop_nan(x_train, table.y_train)
-  (x_test_drop, y_test_drop) = evaluate.drop_nan(x_test, table.y_test)
+  (x_train_drop, y_train_drop) = drop_nan(x_train, table.y_train)
+  (x_test_drop, y_test_drop) = drop_nan(x_test, table.y_test)
 
   # Fit regression.
   if method == 'OLS':

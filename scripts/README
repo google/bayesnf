@@ -70,3 +70,6 @@ Step 3. Run the baseline evaluation scripts.
           (an integer)
         --tsreg_method: <OLS|RIDGE|LASSO>: Method for trend-surface regression.
           (default: 'OLS')
+
+Predictions from all the methods are available at
+http://cs.cmu.edu/~fsaad/assets/bayesnf/results.tar.gz

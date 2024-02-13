@@ -22,7 +22,8 @@ gradient descent for handling large-scale data.
 
 ## Installation
 
-`bayesnf` can be installed from the Python Package Index (PyPI) using:
+`bayesnf` can be installed from the Python Package Index
+([PyPI](https://pypi.org/project/bayesnf/)) using:
 
 ```
 python -m pip install .

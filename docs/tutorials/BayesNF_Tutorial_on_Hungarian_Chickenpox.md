@@ -8,13 +8,12 @@ target="_blank" href="https://colab.research.google.com/github/google/bayesnf/bl
 
 ```python
 # Download latest version of bayesnf.
-!git clone --quiet https://github.com/google/bayesnf
-!cd bayesnf && python -m pip --quiet install .
+!pip install bayesnf
 ```
 
 
 ```python
-# Intsall Python libraries for plotting.
+# Install Python libraries for plotting.
 !pip -q install cartopy
 !pip -q install contextily
 ```
@@ -368,7 +367,7 @@ model = BayesianNeuralFieldMAP(
 
 ## Fitting the Estimator
 
-All three estimators provide a `.fit` method, with slightly different signatures. The configuration below trains an ensemble comprised of 64 particles for 5000 epochs. These commands were run on a TPU v3 with 8 cores; the compute requirements should be adjusted for the available resources.
+All three estimators provide a `.fit` method, with slightly different signatures. The configuration below trains an ensemble comprised of 64 particles for 5000 epochs. These commands require ~120 seconds on a TPU v3-8; the `ensemble_size` and `num_epochs` values should be adjusted depending on the available resources.
 
 
 ```python

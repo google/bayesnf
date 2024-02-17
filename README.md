@@ -31,8 +31,9 @@ python -m pip install bayesnf
 
 The typical install time is 1 minute. This software is tested on Python 3.11
 with a standard Debian GNU/Linux setup. The large-scale experiments in
-`scripts/` were run using TPU v3-8 accelerators. For running BayesNF
-locally on medium to large-scale data, a GPU is required at minimum.
+`scripts/` were run using [TPU v3-8 accelerators](https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu-v3-config).
+To run BayesNF locally on medium to large-scale data, a GPU is
+required at minimum.
 
 ## Documentation and Tutorials
 

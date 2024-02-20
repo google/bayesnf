@@ -16,6 +16,7 @@ target="_blank" href="https://colab.research.google.com/github/google/bayesnf/bl
 # Install Python libraries for plotting.
 !pip -q install cartopy
 !pip -q install contextily
+!pip -q install geopandas
 ```
 
 

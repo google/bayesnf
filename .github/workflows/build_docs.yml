@@ -1,9 +1,6 @@
 name: Build docs
 
-on:
-  push:
-    branches:
-      - main
+on: [push, workflow_dispatch]
 
 jobs:
   build:
@@ -26,7 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install .[docs]
 
-      - name: Upload docs
-        run: |
-          mkdocs build  # twice, see https://github.com/patrick-kidger/pytkdocs_tweaks
-          mkdocs gh-deploy --force
+      - name: Build docs
+        run: mkdocs build
+
+      - name: Deploy docs
+        if: |
+          github.repository == 'google/bayesnf'
+          && github.ref == 'refs/heads/main'
+        run: mkdocs gh-deploy --force

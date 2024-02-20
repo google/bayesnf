@@ -94,3 +94,4 @@ nav:
         - 'api/BayesianNeuralFieldMLE.md'
     - Tutorials:
         - Hungarian Chickenpox: 'tutorials/BayesNF_Tutorial_on_Hungarian_Chickenpox.md'
+        - London Air Quality: 'tutorials/BayesNF_Tutorial_on_London_Air_Quality.md'

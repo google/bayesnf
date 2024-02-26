@@ -13,9 +13,10 @@
 # limitations under the License.
 
 """Tests for spatiotemporal.py."""
-from bayesnf import spatiotemporal
 import numpy as np
 import pytest
+
+from bayesnf import spatiotemporal
 
 
 @pytest.mark.parametrize(
@@ -43,3 +44,71 @@ def test_seasonality_to_float(seasonality, freq, expected):
 def test_seasonalities_to_array():
   periods = spatiotemporal.seasonalities_to_array(["D", "W", "M"], "H")
   np.testing.assert_allclose(periods, np.array([24, 168, 730.5]))
+
+
+@pytest.mark.parametrize('p, h', [([], []), ([10, 15], [8,6])])
+def test_get_seasonality_periods_index(p, h):
+  # Harmonics in discrete time are identical to inputs.
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    freq='D',
+    seasonality_periods=p,
+    num_seasonal_harmonics=h,
+    feature_cols=['t'],
+    target_col='x',
+    timetype='index',)
+  assert np.all(model._get_seasonality_periods() == p)
+  assert np.all(model._get_num_seasonal_harmonics() == h)
+
+
+@pytest.mark.parametrize('p, h', [([], []), ([10, 12, .25], [.5, .5, .125])])
+def test_get_seasonality_periods_float(p, h):
+  # Harmonics in continuous time are min(.5, p/2).
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    seasonality_periods=p,
+    feature_cols=['t'],
+    target_col='x',
+    timetype='float',)
+  assert np.all(model._get_seasonality_periods() == p)
+  assert np.all(model._get_num_seasonal_harmonics() == h)
+
+
+def test_invalid_frequency():
+  # timetype == 'index' requires a frequency.
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    feature_cols=['t'],
+    target_col='x',
+    timetype='index',)
+  with pytest.raises(ValueError):
+    model._get_seasonality_periods()
+
+  # timetype == 'index' does not allow a frequency.
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    freq='M',
+    feature_cols=['t'],
+    target_col='x',
+    timetype='float',)
+  with pytest.raises(ValueError):
+    model._get_seasonality_periods()
+
+
+def test_invalid_seasonality_period():
+  # timetype == 'float' does not allow string periods.
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    seasonality_periods=['W'],
+    feature_cols=['t'],
+    target_col='x',
+    timetype='float',)
+  with pytest.raises(ValueError):
+    print(model._get_seasonality_periods())
+
+
+def test_invalid_num_seasonal_harmonics():
+  # timetype == 'float' does not allow num_seasonal_harmonics.
+  model = spatiotemporal.BayesianNeuralFieldMAP(
+    seasonality_periods=[1, 5],
+    num_seasonal_harmonics=[.5, 1],
+    feature_cols=['t'],
+    target_col='x',
+    timetype='float',)
+  with pytest.raises(ValueError):
+    model._get_num_seasonal_harmonics()

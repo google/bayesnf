@@ -57,6 +57,7 @@ def run_objective(objective, inference_config):
   return pd.read_csv(os.path.join(output_dir, fname), index_col=0)
 
 
+@pytest.mark.skip(reason='Github server version issue.')
 def test_map_mini(golden_data_getter):
   inference_config = {
       'num_particles': 4,
@@ -67,6 +68,7 @@ def test_map_mini(golden_data_getter):
   assert new_data.equals(old_data)
 
 
+@pytest.mark.skip(reason='Github server version issue.')
 def test_mle_mini(golden_data_getter):
   inference_config = {
       'num_particles': 4,
@@ -77,6 +79,7 @@ def test_mle_mini(golden_data_getter):
   assert new_data.equals(old_data)
 
 
+@pytest.mark.skip(reason='Github server version issue.')
 def test_vi_mini(golden_data_getter):
   inference_config = {
       'batch_size': None,

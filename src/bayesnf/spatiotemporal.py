@@ -60,8 +60,9 @@ def seasonality_to_float(seasonality: str, freq: str) -> float:
 
 
 def seasonalities_to_array(
-    seasonalities: Sequence[float | str], freq: str
-) -> np.ndarray:
+    seasonalities: Sequence[float | str],
+    freq: str
+    ) -> np.ndarray:
   """Convert a list of floats or strings to durations relative to a frequency.
 
   Args:
@@ -95,10 +96,15 @@ def seasonalities_to_array(
 
 
 def _convert_datetime_col(table, time_column, timetype, freq, time_min=None):
+  """Converts a time column in place according to the frequency."""
   if timetype == 'index':
     first_date = pd.to_datetime('2020-01-01').to_period(freq)
     table[time_column] = table[time_column].dt.to_period(freq)
     table[time_column] = (table[time_column] - first_date).apply(lambda x: x.n)
+  elif timetype == 'float':
+    table[time_column] = table[time_column].apply(float)
+  else:
+    raise ValueError(f'Unknown timetype: {timetype}')
   if time_min is None:
     time_min = table[time_column].min()
   table[time_column] = table[time_column] - time_min
@@ -217,7 +223,7 @@ class BayesianNeuralFieldEstimator:
       num_seasonal_harmonics: Sequence[int] | None = None,
       fourier_degrees: Sequence[float] | None = None,
       interactions: Sequence[tuple[int, int]] | None = None,
-      freq: str,
+      freq: str | None = None,
       timetype: str = 'index',
       depth: int = 2,
       width: int = 512,
@@ -227,63 +233,41 @@ class BayesianNeuralFieldEstimator:
     """Shared initialization for subclasses of BayesianNeuralFieldEstimator.
 
     Args:
-      feature_cols:
-        Names of columns to use as features in the training
-        data frame. The first entry denotes the name of the time variable,
-        the remaining entries (if any) denote names of the spatial features.
-
-      target_col:
-        Name of the target column representing the spatial field.
-
-      seasonality_periods:
-        A list of numbers representing the seasonal frequencies of the data
-        in the time domain. It is also possible to specify a string such as
-        'W', 'D', etc. corresponding to a valid Pandas frequency: see the
-        Pandas [Offset Aliases](
-        https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
-        for valid values.
-
-      num_seasonal_harmonics:
-        A list of seasonal harmonics, one for each entry in
-        `seasonality_periods`. The number of seasonal harmonics (h) for a
-        given seasonal period `p` must satisfy `h < p//2`.
-
-      fourier_degrees:
-        A list of integer degrees for the Fourier features of the inputs.
-        If given, must have the same length as `feature_cols`.
-
-      interactions:
-        A list of tuples of column indexes for the first-order
+      feature_cols: Names of columns to use as features in the training data
+        frame. The first entry denotes the name of the time variable, the
+        remaining entries (if any) denote names of the spatial features.
+      target_col: Name of the target column representing the spatial field.
+      seasonality_periods: A list of numbers representing the seasonal
+        frequencies of the data in the time domain. If timetype == 'index', then
+        it is possible to specify numeric frequencies by using string short
+        hands such as 'W', 'D', etc., which correspond to a valid Pandas
+        frequency. See Pandas [Offset
+        Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+        for valid string values.
+      num_seasonal_harmonics: A list of seasonal harmonics, one for each entry
+        in `seasonality_periods`. The number of seasonal harmonics (h) for a
+        given seasonal period `p` must satisfy `h < p//2`. It is an error fir
+        `len(num_seasonal_harmonics) != len(seasonality_periods)`. Should be
+        used only if `timetype == 'index'`.
+      fourier_degrees: A list of integer degrees for the Fourier features of the
+        inputs. If given, must have the same length as `feature_cols`.
+      interactions: A list of tuples of column indexes for the first-order
         interactions. For example `[(0,1), (1,2)]` creates two interaction
-        features
-
-        - `feature_cols[0] * feature_cols[1]`
-        - `feature_cols[1] * feature_cols[2]`
-
-      freq:
-        A frequency string for the sampling rate at which the data is
-        collected. See the Pandas
-        [Offset Aliases](
-        https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
-        for valid values.
-
-      timetype:
-        Must be specified as `index`. The general versions will be
-        integrated pending https://github.com/google/bayesnf/issues/16.
-
-      depth:
-        The number of hidden layers in the BayesNF architecture.
-
-      width:
-        The number of hidden units in each layer.
-
-      observation_model:
-        The aleatoric noise model for the observed data. The options are
-        `NORMAL` (Gaussian noise), `NB` (negative binomial noise), or `ZNB`
-        (zero-inflated negative binomial noise).
-
-      standardize:
-        List of columns that should be standardized. It is highly
+        features  - `feature_cols[0] * feature_cols[1]` - `feature_cols[1] *
+        feature_cols[2]`
+      freq: A frequency string for the sampling rate at which the data is
+        collected. See the Pandas [Offset
+        Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+        for valid values. Should be used if and only if `timetype == 'index'`.
+      timetype: Either `index` or `float`. If `index`, then the time column must
+        be a `datetime` type and `freq` must be given. Otherwise, if `float`,
+        then the time column must be `float`.
+      depth: The number of hidden layers in the BayesNF architecture.
+      width: The number of hidden units in each layer.
+      observation_model: The aleatoric noise model for the observed data. The
+        options are `NORMAL` (Gaussian noise), `NB` (negative binomial noise),
+        or `ZNB` (zero-inflated negative binomial noise).
+      standardize: List of columns that should be standardized. It is highly
         recommended to standardize `feature_cols[1:]`. It is an error if
         `features_cols[0]` (the time variable) is in `standardize`.
     """
@@ -337,18 +321,48 @@ class BayesianNeuralFieldEstimator:
             f' passed shape was {interactions.shape})')
     return interactions
 
+  def _get_seasonality_periods(self):
+    """Return array of seasonal periods."""
+    if (
+        (self.timetype == 'index' and self.freq is None) or
+        (self.timetype == 'float' and self.freq is not None)):
+      raise ValueError(f'Invalid {self.freq=} with {self.timetype=}.')
+    if self.seasonality_periods is None:
+      return np.zeros(0)
+    if self.timetype == 'index':
+      return seasonalities_to_array(self.seasonality_periods, self.freq)
+    if self.timetype == 'float':
+      return np.asarray(self.seasonality_periods, dtype=float)
+    assert False, f'Impossible {self.timetype=}.'
+
+  def _get_num_seasonal_harmonics(self):
+    """Return array of seasonal harmonics per seasonal period."""
+    # Discrete time.
+    if self.timetype == 'index':
+      return (
+          np.array(self.num_seasonal_harmonics)
+          if self.num_seasonal_harmonics is not None else
+          np.zeros(0))
+    # Continuous time.
+    if self.timetype == 'float':
+      if self.num_seasonal_harmonics is not None:
+        raise ValueError(
+            f'Cannot use num_seasonal_harmonics with {self.timetype=}.'
+        )
+      # HACK: models.make_seasonal_frequencies assumes the data is discrete
+      # time where each harmonic h is between 1, ..., p/2 and the harmonic
+      # factors are np.arange(1, h + 1). Since our goal with continuous
+      # time data is exactly 1 harmonic per seasonal factor, any h between
+      # 0 and min(0.5, p/2) will work, as np.arange(1, 1+h) = [1]
+      return np.fmin(.5, self._get_seasonality_periods() / 2)
+    assert False, f'Impossible {self.timetype=}.'
+
   def _model_args(self, batch_shape):
     return {
         'depth': self.depth,
         'input_scales': self.data_handler.get_input_scales(),
-        'num_seasonal_harmonics':
-            np.array(self.num_seasonal_harmonics)
-            if self.num_seasonal_harmonics is not None
-            else np.zeros(0),
-        'seasonality_periods':
-            seasonalities_to_array(self.seasonality_periods, self.freq)
-            if self.seasonality_periods is not None
-            else np.zeros(0),
+        'num_seasonal_harmonics': self._get_num_seasonal_harmonics(),
+        'seasonality_periods': self._get_seasonality_periods(),
         'width': self.width,
         'init_x': batch_shape,
         'fourier_degrees': self._get_fourier_degrees(batch_shape),

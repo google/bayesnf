@@ -14,44 +14,36 @@
 
 """Integration tests against golden data for evaluate.py."""
 
-import io
 import os
-import pkgutil
 import tempfile
 
-import bayesnf
 import dataset_config
 import evaluate
 import jax
 import pandas as pd
 import pytest
 
-_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 @pytest.fixture(name='golden_data_getter')
 def fixture_golden_data_getter():
   def data_getter(fname):
-    try:
-      data = pd.read_csv(
-          io.BytesIO(pkgutil.get_data('bayesnf.tests', f'test_data/{fname}')))
-    # Training data is missing and must be added.
-    except FileNotFoundError as exc:
-      raise FileNotFoundError(
-          f'Expected to see {fname} in {bayesnf.__file__}/tests/test_data'
-      ) from exc
-    return data
+    data_path = os.path.join(DIR, 'test_data', fname)
+    return pd.read_csv(data_path, index_col=0)
   return data_getter
 
 
 def run_objective(objective, inference_config):
+  """Runs an objective on the chickenpox dataset."""
   dataset = 'chickenpox'
   series_id = '8'
   output_dir = tempfile.mkdtemp()
   fname = f'bnf-{objective}.chickenpox.8.pred.csv'
-  _ = evaluate.run_experiment(
+  evaluate.run_experiment(
       dataset=dataset,
-      data_root=os.path.join(_DIR, 'test_data'),
+      data_root=os.path.join(DIR, 'test_data'),
       series_id=series_id,
       output_dir=output_dir,
       objective=objective,
@@ -60,37 +52,40 @@ def run_objective(objective, inference_config):
       inference_config=inference_config,
       seed=jax.random.PRNGKey(0),
   )
-  return pd.read_csv(os.path.join(output_dir, fname))
+  return pd.read_csv(os.path.join(output_dir, fname), index_col=0)
 
 
-@pytest.mark.skip('Too slow.')
-def test_map(golden_data_getter):
+@pytest.mark.skip(reason='Github server version issue.')
+def test_map_mini(golden_data_getter):
   inference_config = {
-      'num_particles': 64,
-      'num_epochs': 100,
+      'num_particles': 4,
+      'num_epochs': 5,
       'learning_rate': 0.005}
   new_data = run_objective('map', inference_config)
-  assert new_data.equals(golden_data_getter('bnf-map.chickenpox.8.pred.csv'))
+  old_data = golden_data_getter('bnf-map.chickenpox.8.mini.pred.csv')
+  assert new_data.equals(old_data)
 
 
-@pytest.mark.skip('Too slow.')
-def test_mle(golden_data_getter):
+@pytest.mark.skip(reason='Github server version issue.')
+def test_mle_mini(golden_data_getter):
   inference_config = {
-      'num_particles': 64,
-      'num_epochs': 100,
+      'num_particles': 4,
+      'num_epochs': 5,
       'learning_rate': 0.005}
   new_data = run_objective('mle', inference_config)
-  assert new_data.equals(golden_data_getter('bnf-mle.chickenpox.8.pred.csv'))
+  old_data = golden_data_getter('bnf-mle.chickenpox.8.mini.pred.csv')
+  assert new_data.equals(old_data)
 
 
-@pytest.mark.skip('Too slow.')
-def test_vi(golden_data_getter):
+@pytest.mark.skip(reason='Github server version issue.')
+def test_vi_mini(golden_data_getter):
   inference_config = {
-      'batch_size': 511,
+      'batch_size': None,
       'kl_weight': 0.1,
       'learning_rate': 0.01,
-      'num_epochs': 100,
-      'num_particles': 64,
-      'sample_size': 5}
+      'num_epochs': 2,
+      'num_particles': 1,
+      'sample_size_divergence': 5}
   new_data = run_objective('vi', inference_config)
-  assert new_data.equals(golden_data_getter('bnf-vi.chickenpox.8.pred.csv'))
+  old_data = golden_data_getter('bnf-vi.chickenpox.8.mini.pred.csv')
+  assert new_data.equals(old_data)

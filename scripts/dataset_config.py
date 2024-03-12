@@ -21,7 +21,7 @@ DATASET_CONFIG = {
         'num_series': 10,
         'target_col': 'pm10',
         'timetype': 'index',
-        'freq': 'H',
+        'freq': 'h',
         'feature_cols': ['datetime', 'latitude', 'longitude'],
         'standardize': ['latitude', 'longitude'],
         'series_id_fmt': str,

@@ -24,16 +24,16 @@ import pytest
         ("Y", "Y", 1),
         ("Q", "Q", 1),
         ("Y", "Q", 4),
-        ("M", "H", 730.5),
+        ("M", "h", 730.5),
         ("Q", "M", 3),
         ("Y", "M", 12),
         ("M", "D", 30.4375),
-        ("min", "S", 60),
-        ("H", "S", 3600),
-        ("D", "S", 86400),
-        ("M", "S", 2629800),
-        ("Q", "S", 7889400),
-        ("Y", "S", 31557600),
+        ("min", "s", 60),
+        ("h", "s", 3600),
+        ("D", "s", 86400),
+        ("M", "s", 2629800),
+        ("Q", "s", 7889400),
+        ("Y", "s", 31557600),
     ],
 )
 def test_seasonality_to_float(seasonality, freq, expected):
@@ -42,7 +42,7 @@ def test_seasonality_to_float(seasonality, freq, expected):
 
 
 def test_seasonalities_to_array():
-  periods = spatiotemporal.seasonalities_to_array(["D", "W", "M"], "H")
+  periods = spatiotemporal.seasonalities_to_array(["D", "W", "M"], "h")
   np.testing.assert_allclose(periods, np.array([24, 168, 730.5]))
 
 

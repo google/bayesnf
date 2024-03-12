@@ -49,7 +49,7 @@ def seasonality_to_float(seasonality: str, freq: str) -> float:
   Returns:
     A float of how many `seasonality` periods are in a `freq`, on average.
   """
-  four_years = pd.date_range('2020-01-01', periods=5, freq='Y')
+  four_years = pd.date_range('2020-01-01', periods=5, freq='YS')
   y = four_years.to_period(seasonality)
   num_seasonality = (y[-1] - y[0]).n
 

@@ -20,6 +20,20 @@ temporal forecasting, and variography. Posterior inference is conducted
 using variationally learned surrogates trained via mini-batch stochastic
 gradient descent for handling large-scale data.
 
+The probabilistic model and inference algorithm are described in the
+[following paper](https://arxiv.org/abs/2403.07657):
+
+```bibtex
+@article{
+title   = {Scalable Spatiotemporal Prediction with {Bayesian} Neural Fields},
+authors = {Saad, Feras and Burnim, Jacob and Carroll, Colin and Patton, Brian and Köster, Urs  and Saurous, Rif A. and Hoffman, Matthew}
+journal = {arXiv},
+volume  = {2403.07657},
+year    = {2024},
+doi     = {10.48550/arXiv.2403.07657},
+}
+```
+
 ## Installation
 
 `bayesnf` can be installed from the Python Package Index

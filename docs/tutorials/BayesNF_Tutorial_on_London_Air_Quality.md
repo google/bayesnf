@@ -382,14 +382,14 @@ for ax, location in zip(axes.flat, locations):
   ax.set_title('Test Location: %s' % (location,))
   ax.set_xticks([])
   ax.set_xlabel('Time')
-  ax.set_ylabel('Flu Cases')
+  ax.set_ylabel('PM10')
 axes.flat[0].legend(loc='upper left')
 ```
 
 
 
 
-    <matplotlib.legend.Legend at 0x7f59b182b550>
+    <matplotlib.legend.Legend at 0x7f01f0413be0>
 
 
 

@@ -62,7 +62,7 @@ The versions of dependencies will depend on the Python version.
 Github Actions tests the software using Python 3.10.
 If encountering any version issues, please refer to the following file
 for the versions of libraries used in the test suite:
-[requirements.Python3.10.14.txt](requirements.Python3.10.14.txt).
+[requirements.Python3.10.14.txt](https://github.com/google/bayesnf/blob/main/requirements.Python3.10.14.txt).
 These specific versions can be installed into the virtual environment
 using the following command:
 

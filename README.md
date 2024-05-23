@@ -40,14 +40,36 @@ doi     = {10.48550/arXiv.2403.07657},
 ([PyPI](https://pypi.org/project/bayesnf/)) using:
 
 ```
-python -m pip install bayesnf
+$ python -m pip install bayesnf
 ```
 
-The typical install time is 1 minute. This software is tested on Python 3.11
+The typical install time is 1 minute. This software is tested on Python 3.10
 with a standard Debian GNU/Linux setup. The large-scale experiments in
 `scripts/` were run using [TPU v3-8 accelerators](https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu-v3-config).
 To run BayesNF locally on medium to large-scale data, a GPU is
 required at minimum.
+
+Installation into a virtual environment is highly recommended, using the
+following steps:
+
+```
+$ python -m venv pyenv
+$ source pyenv/bin/activate
+$ python -m pip install -U bayesnf
+```
+
+The versions of dependencies will depend on the Python version.
+Github Actions tests the software using Python 3.10.
+If encountering any version issues, please refer to the following file
+for the versions of libraries used in the test suite:
+[requirements.Python3.10.14.txt](https://github.com/google/bayesnf/blob/main/requirements.Python3.10.14.txt).
+These specific versions can be installed into the virtual environment
+using the following command:
+
+```
+$ python -m pip install -r requirements.Python3.10.14.txt
+```
+
 
 ## Documentation and Tutorials
 

@@ -51,7 +51,7 @@ Step 3. Run the baseline evaluation scripts.
       flags:
 
       evaluate_baseline.py:
-        --algorithm: <SVGP|ST-SVGP|MF-ST-SVGP|RF|GBOOST|TSREG>: Algorithm name
+        --algorithm: <SVGP|ST-SVGP|MF-ST-SVGP|RF|GBOOST|TSREG|NF>: Algorithm name
         --data_root: Location of input data.
         --dataset: <air_quality|wind|air|chickenpox|coprecip|sst>: Dataset name
         --gboost_estimators: Number of GBOOST estimators.
@@ -59,6 +59,14 @@ Step 3. Run the baseline evaluation scripts.
           (an integer)
         --[no]gboost_featurize: Add Fourier features to GBOOST baseline.
           (default: 'false')
+        --nf_epochs: Number of epochs for NeuralForecast training.
+          (default: '5000')
+          (an integer)
+        --nf_method: Method for NeuralForecast baseline (https://nixtlaverse.nixtla.io/neuralforecast/models.html).
+          (default: 'NBEATS')
+        --nf_window: Number of previous horizons in NeuralForecast window.
+          (default: '5')
+          (an integer)
         --output_dir: Output directory.
         --start_id: Run experiments on series with IDs >= this value.
           (default: '5')

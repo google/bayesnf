@@ -53,7 +53,7 @@ tensorstore==0.1.58
 tomli==2.0.1
 tomlkit==0.12.4
 toolz==0.12.1
-tqdm==4.66.2
+tqdm==4.66.3
 typeguard==2.13.3
 typing_extensions==4.11.0
 tzdata==2024.1

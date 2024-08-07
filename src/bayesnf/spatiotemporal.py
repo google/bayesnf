@@ -175,7 +175,7 @@ class SpatiotemporalDataHandler:
 
   def get_test(self, table: pd.DataFrame) -> np.ndarray:
     """Fetch testing data. Call this after `get_train`."""
-    table = self.copy_and_filter_table(table)
+    table = table.copy()
     table, _ = _convert_datetime_col(
         table, self._time_column, self.timetype, self.freq, self.time_min_)
 

@@ -1,10 +1,9 @@
 Instructions for running the evaluation pipeline on spatiotemporal datasets.
 
-Step 1. Obtain the training data
+Step 1. Download the datasets folder (https://doi.org/10.5281/zenodo.12735404),
+then run the following command
 
-    $ wget https://cs.cmu.edu/~fsaad/assets/bayesnf/datasets.tar.gz
-    $ mkdir -p data/
-    $ tar -zxv -C data -f datasets.tar.gz
+    $ unzip datasets.zip
 
 Step 2. Run the BayesNF evaluation scripts. Original experiments
   were run on a TPU v3-8 accelerator, available on Google Cloud
@@ -34,7 +33,7 @@ Step 2. Run the BayesNF evaluation scripts. Original experiments
   An example invocation is the following:
 
     $ python evaluate.py \
-      --data_root=data \
+      --data_root=datasets \
       --dataset=chickenpox \
       --output_dir=data \
       --objective=map \
@@ -79,5 +78,6 @@ Step 3. Run the baseline evaluation scripts.
         --tsreg_method: <OLS|RIDGE|LASSO>: Method for trend-surface regression.
           (default: 'OLS')
 
-Predictions from all the methods are available at
-http://cs.cmu.edu/~fsaad/assets/bayesnf/results.tar.gz
+Predictions from all the methods are available for download at Zenodo:
+
+  https://doi.org/10.5281/zenodo.12735404

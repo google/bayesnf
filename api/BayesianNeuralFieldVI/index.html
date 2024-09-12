@@ -1,0 +1,1220 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The documentation for the bayesnf software library.">
+      
+      
+        <meta name="author" content="Colin Carroll">
+      
+      
+        <link rel="canonical" href="https://google.github.io/bayesnf/api/BayesianNeuralFieldVI/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-8.2.6">
+    
+    
+      
+        <title>BayesianNeuralFieldVI - bayesnf</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9d5733d3.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../_static/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="amber">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bayesianneuralfieldvi" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="bayesnf" class="md-header__button md-logo" aria-label="bayesnf" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            bayesnf
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BayesianNeuralFieldVI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/google/bayesnf" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    google/bayesnf
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="bayesnf" class="md-nav__button md-logo" aria-label="bayesnf" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    bayesnf
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/google/bayesnf" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    google/bayesnf
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BayesianNeuralFieldEstimator/" class="md-nav__link">
+        BayesianNeuralFieldEstimator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          BayesianNeuralFieldVI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        BayesianNeuralFieldVI
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bayesnf.spatiotemporal.BayesianNeuralFieldVI" class="md-nav__link">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BayesianNeuralFieldVI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayesnf.spatiotemporal.BayesianNeuralFieldVI.fit" class="md-nav__link">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fit
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BayesianNeuralFieldMAP/" class="md-nav__link">
+        BayesianNeuralFieldMAP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BayesianNeuralFieldMLE/" class="md-nav__link">
+        BayesianNeuralFieldMLE
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/BayesNF_Tutorial_on_Hungarian_Chickenpox/" class="md-nav__link">
+        Hungarian Chickenpox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/BayesNF_Tutorial_on_London_Air_Quality/" class="md-nav__link">
+        London Air Quality
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bayesnf.spatiotemporal.BayesianNeuralFieldVI" class="md-nav__link">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BayesianNeuralFieldVI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayesnf.spatiotemporal.BayesianNeuralFieldVI.fit" class="md-nav__link">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fit
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="bayesianneuralfieldvi">BayesianNeuralFieldVI<a class="headerlink" href="#bayesianneuralfieldvi" title="Permanent link">¤</a></h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="bayesnf.spatiotemporal.BayesianNeuralFieldVI"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="bayesnf.spatiotemporal.BayesianNeuralFieldEstimator" href="../BayesianNeuralFieldEstimator/#bayesnf.spatiotemporal.BayesianNeuralFieldEstimator">BayesianNeuralFieldEstimator</a></code></p>
+
+
+        <p>Fits models using stochastic ensembles of surrogate posteriors from VI.</p>
+<p>Implementation of
+<a href="../BayesianNeuralFieldEstimator/">BayesianNeuralFieldEstimator</a> using
+variational inference (VI).</p>
+
+              <details class="quote">
+                <summary>Source code in <code>bayesnf/spatiotemporal.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span>
+<span class="normal">641</span>
+<span class="normal">642</span>
+<span class="normal">643</span>
+<span class="normal">644</span>
+<span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span>
+<span class="normal">648</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BayesianNeuralFieldVI</span><span class="p">(</span><span class="n">BayesianNeuralFieldEstimator</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Fits models using stochastic ensembles of surrogate posteriors from VI.</span>
+
+<span class="sd">  Implementation of</span>
+<span class="sd">  [BayesianNeuralFieldEstimator](BayesianNeuralFieldEstimator.md) using</span>
+<span class="sd">  variational inference (VI).</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">_ensemble_dims</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="n">_scale_epochs_by_batch_size</span> <span class="o">=</span> <span class="kc">True</span>
+
+  <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">table</span><span class="p">,</span>
+      <span class="n">seed</span><span class="p">,</span>
+      <span class="n">ensemble_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+      <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+      <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+      <span class="n">sample_size_posterior</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+      <span class="n">sample_size_divergence</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">kl_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+      <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BayesianNeuralFieldEstimator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run inference using stochastic variational inference ensembles.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      table (pandas.DataFrame):</span>
+<span class="sd">        See documentation of</span>
+<span class="sd">        [`table`][bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit]</span>
+<span class="sd">        in the base class.</span>
+
+<span class="sd">      seed (jax.random.PRNGKey): The jax random key.</span>
+
+<span class="sd">      ensemble_size (int): Number of particles (i.e., surrogate posteriors)</span>
+<span class="sd">        in the ensemble, **per device**. The available devices can be found</span>
+<span class="sd">        via `jax.devices()`.</span>
+
+<span class="sd">      learning_rate (float): Learning rate for SGD.</span>
+
+<span class="sd">      num_epochs (int): Number of full epochs through the training data.</span>
+
+<span class="sd">      sample_size_posterior (int): Number of samples of &quot;posterior&quot; model</span>
+<span class="sd">        parameters draw from each surrogate posterior when making</span>
+<span class="sd">        predictions.</span>
+
+<span class="sd">      sample_size_divergence (int): number of Monte Carlo samples to use in</span>
+<span class="sd">        estimating the variational divergence. Larger values may stabilize</span>
+<span class="sd">        the optimization, but at higher cost per step in time and memory.</span>
+<span class="sd">        See [`tfp.vi.fit_surrogate_posterior_stateless`](</span>
+<span class="sd">        https://www.tensorflow.org/probability/api_docs/python/tfp/vi/fit_surrogate_posterior_stateless)</span>
+<span class="sd">        for further details.</span>
+
+<span class="sd">      kl_weight (float): Weighting of the KL divergence term in VI. The</span>
+<span class="sd">        goal is to find a surrogate posterior `q(z)` that maximizes a</span>
+<span class="sd">        version of the ELBO with the `KL(surrogate posterior || prior)`</span>
+<span class="sd">        term scaled by `kl_weight`</span>
+
+<span class="sd">            E_z~q [log p(x|z)] - kl_weight * KL(q || p)</span>
+
+<span class="sd">        Reference</span>
+<span class="sd">        &gt; Weight Uncertainty in Neural Network</span>
+<span class="sd">        &gt; Charles Blundell, Julien Cornebise, Koray Kavukcuoglu, Daan Wierstra.</span>
+<span class="sd">        &gt; Proceedings of the 32nd International Conference on Machine Learning.</span>
+<span class="sd">        &gt; PMLR 37:1613-1622, 2015.</span>
+<span class="sd">        &gt; &lt;https://proceedings.mlr.press/v37/blundell15&gt;</span>
+
+<span class="sd">      batch_size (None | int): If specified, the log probability in each</span>
+<span class="sd">        step of variational inference  is computed on a batch of this size.</span>
+<span class="sd">        Default is `None`, meaning full-batch.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Instance of self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_train</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="n">train_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_target</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">batch_size</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale_epochs_by_batch_size</span><span class="p">:</span>
+      <span class="n">num_epochs</span> <span class="o">=</span> <span class="n">num_epochs</span> <span class="o">*</span> <span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">model_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_args</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">losses_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">fit_vi</span><span class="p">(</span>
+        <span class="n">train_data</span><span class="p">,</span>
+        <span class="n">train_target</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+        <span class="n">observation_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_model</span><span class="p">,</span>
+        <span class="n">model_args</span><span class="o">=</span><span class="n">model_args</span><span class="p">,</span>
+        <span class="n">ensemble_size</span><span class="o">=</span><span class="n">ensemble_size</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+        <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+        <span class="n">sample_size_posterior</span><span class="o">=</span><span class="n">sample_size_posterior</span><span class="p">,</span>
+        <span class="n">sample_size_divergence</span><span class="o">=</span><span class="n">sample_size_divergence</span><span class="p">,</span>
+        <span class="n">kl_weight</span><span class="o">=</span><span class="n">kl_weight</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="bayesnf.spatiotemporal.BayesianNeuralFieldVI.fit" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">fit</span>
+
+
+<a href="#bayesnf.spatiotemporal.BayesianNeuralFieldVI.fit" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">fit</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">ensemble_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">sample_size_posterior</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">sample_size_divergence</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">kl_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Run inference using stochastic variational inference ensembles.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>table</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>See documentation of
+<a class="autorefs autorefs-internal" href="../BayesianNeuralFieldEstimator/#bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit"><code>table</code></a>
+in the base class.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="pandas.DataFrame">DataFrame</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>seed</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>The jax random key.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="jax.random.PRNGKey">PRNGKey</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>ensemble_size</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Number of particles (i.e., surrogate posteriors)
+in the ensemble, <strong>per device</strong>. The available devices can be found
+via <code>jax.devices()</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>int</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>16</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>learning_rate</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Learning rate for SGD.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>float</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>0.01</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>num_epochs</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Number of full epochs through the training data.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>int</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>1000</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sample_size_posterior</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Number of samples of "posterior" model
+parameters draw from each surrogate posterior when making
+predictions.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>int</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>30</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sample_size_divergence</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>number of Monte Carlo samples to use in
+estimating the variational divergence. Larger values may stabilize
+the optimization, but at higher cost per step in time and memory.
+See <a href="https://www.tensorflow.org/probability/api_docs/python/tfp/vi/fit_surrogate_posterior_stateless"><code>tfp.vi.fit_surrogate_posterior_stateless</code></a>
+for further details.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>int</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>5</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>kl_weight</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Weighting of the KL divergence term in VI. The
+goal is to find a surrogate posterior <code>q(z)</code> that maximizes a
+version of the ELBO with the <code>KL(surrogate posterior || prior)</code>
+term scaled by <code>kl_weight</code></p>
+<pre><code>E_z~q [log p(x|z)] - kl_weight * KL(q || p)
+</code></pre>
+<p>Reference</p>
+<blockquote>
+<p>Weight Uncertainty in Neural Network
+Charles Blundell, Julien Cornebise, Koray Kavukcuoglu, Daan Wierstra.
+Proceedings of the 32nd International Conference on Machine Learning.
+PMLR 37:1613-1622, 2015.
+<a href="https://proceedings.mlr.press/v37/blundell15">https://proceedings.mlr.press/v37/blundell15</a></p>
+</blockquote>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>float</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>0.1</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>batch_size</code></td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>If specified, the log probability in each
+step of variational inference  is computed on a batch of this size.
+Default is <code>None</code>, meaning full-batch.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code>None | int</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="bayesnf.spatiotemporal.BayesianNeuralFieldEstimator" href="../BayesianNeuralFieldEstimator/#bayesnf.spatiotemporal.BayesianNeuralFieldEstimator">BayesianNeuralFieldEstimator</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Instance of self.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+            <details class="quote">
+              <summary>Source code in <code>bayesnf/spatiotemporal.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span>
+<span class="normal">641</span>
+<span class="normal">642</span>
+<span class="normal">643</span>
+<span class="normal">644</span>
+<span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span>
+<span class="normal">648</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">table</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">,</span>
+    <span class="n">ensemble_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">sample_size_posterior</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">sample_size_divergence</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">kl_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BayesianNeuralFieldEstimator</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Run inference using stochastic variational inference ensembles.</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    table (pandas.DataFrame):</span>
+<span class="sd">      See documentation of</span>
+<span class="sd">      [`table`][bayesnf.spatiotemporal.BayesianNeuralFieldEstimator.fit]</span>
+<span class="sd">      in the base class.</span>
+
+<span class="sd">    seed (jax.random.PRNGKey): The jax random key.</span>
+
+<span class="sd">    ensemble_size (int): Number of particles (i.e., surrogate posteriors)</span>
+<span class="sd">      in the ensemble, **per device**. The available devices can be found</span>
+<span class="sd">      via `jax.devices()`.</span>
+
+<span class="sd">    learning_rate (float): Learning rate for SGD.</span>
+
+<span class="sd">    num_epochs (int): Number of full epochs through the training data.</span>
+
+<span class="sd">    sample_size_posterior (int): Number of samples of &quot;posterior&quot; model</span>
+<span class="sd">      parameters draw from each surrogate posterior when making</span>
+<span class="sd">      predictions.</span>
+
+<span class="sd">    sample_size_divergence (int): number of Monte Carlo samples to use in</span>
+<span class="sd">      estimating the variational divergence. Larger values may stabilize</span>
+<span class="sd">      the optimization, but at higher cost per step in time and memory.</span>
+<span class="sd">      See [`tfp.vi.fit_surrogate_posterior_stateless`](</span>
+<span class="sd">      https://www.tensorflow.org/probability/api_docs/python/tfp/vi/fit_surrogate_posterior_stateless)</span>
+<span class="sd">      for further details.</span>
+
+<span class="sd">    kl_weight (float): Weighting of the KL divergence term in VI. The</span>
+<span class="sd">      goal is to find a surrogate posterior `q(z)` that maximizes a</span>
+<span class="sd">      version of the ELBO with the `KL(surrogate posterior || prior)`</span>
+<span class="sd">      term scaled by `kl_weight`</span>
+
+<span class="sd">          E_z~q [log p(x|z)] - kl_weight * KL(q || p)</span>
+
+<span class="sd">      Reference</span>
+<span class="sd">      &gt; Weight Uncertainty in Neural Network</span>
+<span class="sd">      &gt; Charles Blundell, Julien Cornebise, Koray Kavukcuoglu, Daan Wierstra.</span>
+<span class="sd">      &gt; Proceedings of the 32nd International Conference on Machine Learning.</span>
+<span class="sd">      &gt; PMLR 37:1613-1622, 2015.</span>
+<span class="sd">      &gt; &lt;https://proceedings.mlr.press/v37/blundell15&gt;</span>
+
+<span class="sd">    batch_size (None | int): If specified, the log probability in each</span>
+<span class="sd">      step of variational inference  is computed on a batch of this size.</span>
+<span class="sd">      Default is `None`, meaning full-batch.</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    Instance of self.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">train_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_train</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+  <span class="n">train_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_target</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale_epochs_by_batch_size</span><span class="p">:</span>
+    <span class="n">num_epochs</span> <span class="o">=</span> <span class="n">num_epochs</span> <span class="o">*</span> <span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">)</span>
+  <span class="n">model_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_args</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+  <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">losses_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">fit_vi</span><span class="p">(</span>
+      <span class="n">train_data</span><span class="p">,</span>
+      <span class="n">train_target</span><span class="p">,</span>
+      <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+      <span class="n">observation_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_model</span><span class="p">,</span>
+      <span class="n">model_args</span><span class="o">=</span><span class="n">model_args</span><span class="p">,</span>
+      <span class="n">ensemble_size</span><span class="o">=</span><span class="n">ensemble_size</span><span class="p">,</span>
+      <span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+      <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+      <span class="n">sample_size_posterior</span><span class="o">=</span><span class="n">sample_size_posterior</span><span class="p">,</span>
+      <span class="n">sample_size_divergence</span><span class="o">=</span><span class="n">sample_size_divergence</span><span class="p">,</span>
+      <span class="n">kl_weight</span><span class="o">=</span><span class="n">kl_weight</span><span class="p">,</span>
+      <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+  <span class="p">)</span>
+  <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../BayesianNeuralFieldEstimator/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BayesianNeuralFieldEstimator" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              BayesianNeuralFieldEstimator
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../BayesianNeuralFieldMAP/" class="md-footer__link md-footer__link--next" aria-label="Next: BayesianNeuralFieldMAP" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              BayesianNeuralFieldMAP
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "header.autohide"], "search": "../../assets/javascripts/workers/search.5e67fbfe.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e87a5f81.min.js"></script>
+      
+        <script src="../../_static/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

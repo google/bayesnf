@@ -7,30 +7,39 @@
 
 Spatially referenced time series (i.e., spatiotemporal) datasets are
 ubiquitous in scientific, engineering, and business-intelligence
-applications. This repository contains an implementation of the Bayesian
-Neural Field (BayesNF) a novel spatiotemporal modeling method that
-integrates hierarchical probabilistic modeling for accurate uncertainty
+applications. This repository contains an implementation of the _Bayesian
+Neural Field_ (BayesNF), a spatiotemporal modeling method that
+integrates hierarchical Bayesian inference for accurate uncertainty
 estimation with deep neural networks for high-capacity function
 approximation.
 
-Bayesian Neural Fields infer joint probability distributions over field
-values at arbitrary points in time and space, which makes the model
-suitable for many data-analysis tasks including spatial interpolation,
-temporal forecasting, and variography. Posterior inference is conducted
-using variationally learned surrogates trained via mini-batch stochastic
-gradient descent for handling large-scale data.
+BayesNF infer joint probability distributions over field values at
+arbitrary points in time and space, which makes the model suitable for many
+data-analysis tasks including spatial interpolation, temporal forecasting,
+and variography. Posterior inference is conducted using variationally
+learned surrogates trained via mini-batch stochastic gradient descent for
+handling large-scale data. The system is build on the
+[JAX](https://jax.readthedocs.io/en/latest/) machine learning platform.
 
 The probabilistic model and inference algorithm are described in the
-[following paper](https://arxiv.org/abs/2403.07657):
+following [paper](https://www.nature.com/articles/s41467-024-51477-5):
+
+_Scalable spatiotemporal prediction with Bayesian neural fields_. Feras Saad,
+Jacob Burnim, Colin Carroll, Brian Patton, Urs Köster, Rif A. Saurous,
+Matthew Hoffman. Nature Communications **15**, 7942 (2024).
+https://doi.org/10.1038/s41467-024-51477-5
+
 
 ```bibtex
 @article{
-title   = {Scalable Spatiotemporal Prediction with {Bayesian} Neural Fields},
-authors = {Saad, Feras and Burnim, Jacob and Carroll, Colin and Patton, Brian and Köster, Urs  and Saurous, Rif A. and Hoffman, Matthew}
-journal = {arXiv},
-volume  = {2403.07657},
-year    = {2024},
-doi     = {10.48550/arXiv.2403.07657},
+title     = {Scalable Spatiotemporal Prediction with {Bayesian} Neural Fields},
+authors   = {Saad, Feras and Burnim, Jacob and Carroll, Colin and Patton, Brian and Köster, Urs  and Saurous, Rif A. and Hoffman, Matthew}
+journal   = {Nature Communications},
+volume    = {15},
+issue     = {7942},
+year      = {2024},
+doi       = {10.1038/s41467-024-51477-5},
+publisher = {Springer Nature},
 }
 ```
 

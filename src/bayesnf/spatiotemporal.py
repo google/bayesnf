@@ -370,7 +370,7 @@ class BayesianNeuralFieldEstimator:
     }
 
   def predict(self, table, quantiles=(0.5,), approximate_quantiles=False):
-    """Make predictions of the target column at new times.
+    """Make predictions of the target column at new points in the field.
 
     Args:
       table (pandas.DataFrame):
